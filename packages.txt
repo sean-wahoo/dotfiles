@@ -1,0 +1,8 @@
+kitty
+xorg
+xorg-xinit
+neovim
+lua-language-server
+git
+awesome
+ttf-jetbrains-mono-nerd
