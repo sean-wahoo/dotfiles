@@ -15,10 +15,16 @@ local network_interface = handle:read("*a"):sub(1, -3)
 handle = io.popen("hostname -i")
 local ip_address = handle:read("*a")
 
+if string.find(ip_address, '%S+') == 1 then
+  ip_address = string.match(ip_address, '%S+')
+end
+
+
 handle:close();
 
 local widget_text_spacing = (hostname == "box") and 4 or 7
 local container_forced_width = (hostname == "box") and 200 or 240
+local network_forced_width = (hostname == 'box') and 260 or 360
 
 require("awful.autofocus")
 -- Widget and layout library
@@ -266,7 +272,7 @@ container_vol_widget = {
         widget = wibox.container.margin
       },
       shape = gears.shape.rounded_bar,
-      fg = hostname ~= 'box' and '#98BB6C' or '#b4befe',
+      fg = '#b4befe',
       bg = widget_bg,
       widget = wibox.container.background
     },
@@ -378,7 +384,7 @@ container_storage_widget = {
         widget = wibox.container.margin
       },
       shape = gears.shape.rounded_bar,
-      fg = hostname == 'box' and '#D27E99' or "#b4befe",
+      fg = '#D27E99',
       bg = widget_bg,
       forced_width = container_forced_width,
       widget = wibox.container.background
@@ -412,10 +418,10 @@ local container_network_widget = {
         widget = wibox.container.margin
       },
       shape = gears.shape.rounded_bar,
-      fg = '#98BB6C',
+      fg = "#a6e3a1",
       bg = widget_bg,
       widget = wibox.container.background,
-      forced_width = container_forced_width + 60
+      forced_width = network_forced_width
     },
     left = 5,
     right = 5,

@@ -6,3 +6,7 @@ lua-language-server
 git
 awesome
 ttf-jetbrains-mono-nerd
+vicious
+inetutils
+ttf-iosevka-nerd
+ttf-jetbrains-mono-nerd
