@@ -24,6 +24,20 @@ elif [ $AMOUNT -eq 2 ]; then
     BAR+=$D
   done
   echo "$BAR"
+elif [ $AMOUNT -eq 3 ]; then
+  TARGET=$(amixer --card 3 | awk 'BEGIN{RS="Simple mixer control"}; /Mono: Playback / {print substr($18, 2, length($18) - 2)}')
+  if [ $TARGET -lt 10 ]; then
+    TARGET=0;
+  else
+    TARGET=${TARGET::1};
+  fi
+  for ((i = 0; i < $TARGET; i++)); do
+    BAR+=$DOT
+  done
+  for ((i = $TARGET; i < 10; i++)); do
+    BAR+=$D
+  done
+  echo "$BAR"
 else
   echo "Not found."
 fi

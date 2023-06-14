@@ -5,6 +5,21 @@ pcall(require, "luarocks.loader")
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+
+local handle = io.popen("hostnamectl hostname")
+local hostname = handle:read("*a"):sub(1, -2)
+
+handle = io.popen("ip addr | awk '/state UP/ {print $2}'")
+local network_interface = handle:read("*a"):sub(1, -3)
+
+handle = io.popen("hostname -i")
+local ip_address = handle:read("*a")
+
+handle:close();
+
+local widget_text_spacing = (hostname == "box") and 4 or 7
+local container_forced_width = (hostname == "box") and 200 or 240
+
 require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
@@ -20,6 +35,8 @@ require("awful.hotkeys_popup.keys")
 local custom_theme = require "theme"
 local widget_fg = '#a6adc8'
 local widget_bg = '#313244'
+
+local vicious = require('vicious')
 
 -- naughty.config.defaults.margin = 18
 -- naughty.config.presets.critical.bg = beautiful.notification_bg
@@ -210,8 +227,8 @@ container_battery_widget = {
     },
     left = 5,
     right = 5,
-    top = 7,
-    bottom = 7,
+    top = widget_text_spacing,
+    bottom = widget_text_spacing,
     widget = wibox.container.margin
   },
   spacing = 5,
@@ -230,7 +247,7 @@ local update_vol_widget = function(vol)
   vol_widget.text = "󰕾 " .. vol
 end
 
-local vo, vo_signal = awful.widget.watch('/home/sean/.config/awesome/scripts/volume-bar.sh', 60, function (_, stdout)
+local vo, vo_signal = awful.widget.watch('/home/sean/.config/awesome/scripts/volume-bar.sh', 0.5, function (_, stdout)
   local vol = stdout
   update_vol_widget(vol)
 end)
@@ -249,14 +266,14 @@ container_vol_widget = {
         widget = wibox.container.margin
       },
       shape = gears.shape.rounded_bar,
-      fg = '#f38ba8',
+      fg = hostname ~= 'box' and '#98BB6C' or '#b4befe',
       bg = widget_bg,
       widget = wibox.container.background
     },
     left = 5,
     right = 5,
-    top = 7,
-    bottom = 7,
+    top = widget_text_spacing,
+    bottom = widget_text_spacing,
     widget = wibox.container.margin
   },
   spacing = 5,
@@ -283,8 +300,8 @@ local container_clock_widget = {
     },
     left = 5,
     right = 5,
-    top = 7,
-    bottom = 7,
+    top = widget_text_spacing,
+    bottom = widget_text_spacing,
     widget = wibox.container.margin
   },
   spacing = 5,
@@ -361,19 +378,54 @@ container_storage_widget = {
         widget = wibox.container.margin
       },
       shape = gears.shape.rounded_bar,
-      fg = "#b4befe",
+      fg = hostname == 'box' and '#D27E99' or "#b4befe",
       bg = widget_bg,
-      forced_width = 260,
+      forced_width = container_forced_width,
       widget = wibox.container.background
     },
     left = 10,
     right = 5,
-    top = 7,
-    bottom = 7,
+    top = widget_text_spacing,
+    bottom = widget_text_spacing,
     widget = wibox.container.margin
   },
   spacing = 5,
   layout = wibox.layout.fixed.horizontal
+}
+
+local network_wiget = wibox.widget.textbox();
+vicious.cache(vicious.widgets.net)
+
+local up_speed = "󰁝 ${" .. network_interface .. " up_kb}MB"
+local down_speed = "󰁅 ${" .. network_interface .. " down_kb}MB"
+
+vicious.register(network_wiget, vicious.widgets.net, up_speed .. " " .. down_speed .. " - " .. ip_address, 1)
+
+local container_network_widget = {
+  {
+    {
+      {
+        {
+          widget = network_wiget,
+          align = "center",
+        },
+        widget = wibox.container.margin
+      },
+      shape = gears.shape.rounded_bar,
+      fg = '#98BB6C',
+      bg = widget_bg,
+      widget = wibox.container.background,
+      forced_width = container_forced_width + 60
+    },
+    left = 5,
+    right = 5,
+    top = widget_text_spacing,
+    bottom = widget_text_spacing,
+    widget = wibox.container.margin
+  },
+  spacing = 5,
+  layout = wibox.layout.align.horizontal
+
 }
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
@@ -435,7 +487,7 @@ awful.screen.connect_for_each_screen(function(s)
             {
               {
                 id = 'text_role',
-                widget = wibox.widget.textbox
+                widget = wibox.widget.textbox,
               },
               layout = wibox.layout.fixed.horizontal
             },
@@ -452,8 +504,8 @@ awful.screen.connect_for_each_screen(function(s)
         },
         left = 0,
         right = 0,
-        top = 7,
-        bottom = 7,
+        top = widget_text_spacing,
+        bottom = widget_text_spacing,
         widget = wibox.container.margin
       }
     }
@@ -478,12 +530,12 @@ awful.screen.connect_for_each_screen(function(s)
             -- wibox.widget.systray(),
             -- mytextclock,
             -- s.mylayoutbox,
+            container_network_widget,
             container_vol_widget,
             container_storage_widget,
-            container_battery_widget,
+            hostname ~= 'box' and container_battery_widget or nil,
             container_clock_widget,
             layoutbox
-
         },
         top = 0,
         -- left = 12,
