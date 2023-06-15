@@ -1,0 +1,98 @@
+configuration {
+  font: "Iosevka Nerd Font Mono 18";
+  icon-theme: "Papirus";
+
+  drun {
+    display-name: "🔍";
+    size: 24px;
+  }
+
+  run {
+    display-name: "";
+  }
+
+  window {
+    display-name: "";
+    hide-active-window: true;
+  }
+
+  timeout {
+    delay: 10;
+    action: "kb-cancel";
+  }
+}
+
+* {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  spacing: 0;
+
+  bg: #2a2a37;
+  bg-alt: #363646;
+  bg-alt-2: #54546d;
+  fg: #dcd7ba;
+  fg-alt: #c8c093;
+
+  background-color: @bg;
+  text-color: @fg;
+}
+
+window {
+  transparency: "real";
+  padding: 12px;
+  border: 2px;
+  border-color: #dca561;
+  border-radius: 16px;
+}
+
+mainbox {
+  children: [
+    inputbar, listview
+  ];
+}
+
+inputbar {
+  background-color: @bg-alt;
+  children: [ prompt, entry ];
+}
+
+entry {
+  background-color: inherit;
+  padding: 12px;
+}
+
+prompt {
+  background-color: inherit;
+  padding: 12px;
+}
+
+listview {
+  padding: 8px 0px;
+  lines: 12;
+}
+
+element {
+  children: [ element-icon, element-text ];
+}
+
+element-icon {
+  padding: 0px 12px 0px 0px;
+  background-color: inherit;
+}
+
+element selected {
+  background-color: @bg-alt;
+  padding: 10px 10px;
+}
+
+element-text {
+  background-color: inherit;
+  padding: 10px 0;
+}
+
+element-text selected {
+  text-color: @fg-alt;
+}
+
+/* vim: ft=scss

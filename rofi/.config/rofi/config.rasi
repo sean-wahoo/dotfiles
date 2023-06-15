@@ -1,0 +1,26 @@
+@theme "themes/default"
+
+configuration {
+  modi: "drun";
+}
+
+entry {
+  placeholder: "...";
+  cursor: pointer;
+}
+
+element {
+  orientation: horizontal;
+  children: [ element-icon, element-text ];
+  padding: 10px;
+}
+
+element-icon {
+  size: 36px;
+}
+
+element-text {
+  vertical-align: 0.5;
+}
+
+/* vim: ft=scss
