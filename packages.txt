@@ -10,3 +10,5 @@ vicious
 inetutils
 ttf-iosevka-nerd
 ttf-jetbrains-mono-nerd
+dunst
+rofi

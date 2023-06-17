@@ -40,6 +40,7 @@ packer.init {
       return require("packer.util").float { border = "rounded" }
     end,
     prompt_border = "rounded", -- Border style of prompt popups.
+    working_sym = '󰝲'
   },
 }
 return require('packer').startup(function(use)
@@ -119,6 +120,8 @@ return require('packer').startup(function(use)
     end
   }
   use "fladson/vim-kitty"
+  use "navarasu/onedark.nvim"
+  use { "catppuccin/nvim", as = "catppuccin" }
   use {
     'norcalli/nvim-colorizer.lua',
     config = function()
@@ -153,7 +156,6 @@ return require('packer').startup(function(use)
 
   -- buffers
   use "akinsho/bufferline.nvim"
-  use "moll/vim-bbye"
   use "tiagovla/scope.nvim"
 
   -- git
@@ -166,37 +168,6 @@ return require('packer').startup(function(use)
   }
 
   -- utils
-  -- use {
-  --   'nvim-neorg/neorg',
-  --   -- ft = "norg",
-  --   after = 'nvim-treesitter',
-  --   run = ":Neorg sync-parsers",
-  --   -- requires = "nvim-lua/plenary.nvim",
-  --   config = function ()
-  --     require 'neorg'.setup {
-  --       load = {
-  --         ["core.defaults"] = {},
-  --         ['core.norg.dirman'] = {
-  --           config = {
-  --             workspaces = {
-  --               projects = "~/notes/projects"
-  --             }
-  --           }
-  --         },
-  --         ["core.norg.completion"] = {
-  --           config = {
-  --             engine = "nvim-cmp"
-  --           }
-  --         },
-  --         ["core.norg.concealer"] = {
-  --           config = {
-
-  --           }
-  --         }
-  --       }
-  --     }
-  --   end
-  -- }
   
   use {
     "phaazon/hop.nvim",

@@ -58,23 +58,23 @@ for _, server in pairs(servers) do
   end
 
   if server == "lua_ls" then
-    local l_status_ok, lua_dev = pcall(require, "lua-dev")
-    if not l_status_ok then
-      return
-    end
+    -- local l_status_ok, lua_dev = pcall(require, "lua-dev")
+    -- if not l_status_ok then
+    --   return
+    -- end
     local lua_ls_opts = require "user.lsp.settings.lua_ls"
-    opts = vim.tbl_deep_extend("force", lua_ls_opts, opts)
+    -- opts = vim.tbl_deep_extend("force", lua_ls_opts, opts)
     -- opts = vim.tbl_deep_extend("force", require("lua-dev").setup(), opts)
-    local luadev = lua_dev.setup {
-      --   -- add any options here, or leave empty to use the default settings
-      -- lspconfig = opts,
-      lspconfig = {
-        on_attach = opts.on_attach,
-        capabilities = opts.capabilities,
-        --   -- settings = opts.settings,
-      },
-    }
-    lspconfig.lua_ls.setup(luadev)
+    -- local luadev = lua_dev.setup {
+    --   --   -- add any options here, or leave empty to use the default settings
+    --   -- lspconfig = opts,
+    --   lspconfig = {
+    --     on_attach = opts.on_attach,
+    --     capabilities = opts.capabilities,
+    --     --   -- settings = opts.settings,
+    --   },
+    -- }
+    lspconfig.lua_ls.setup(lua_ls_opts)
     goto continue
   end
   lspconfig[server].setup(opts)
