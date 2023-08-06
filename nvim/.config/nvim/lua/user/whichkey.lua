@@ -18,7 +18,7 @@ wk.setup{
       text_objects = false,
       windows = true,
       nav = true,
-      z = true,
+      -- z = true,
       g = true
     }
   },
@@ -81,7 +81,7 @@ wk.register({
   e = { "<cmd>NvimTreeToggle<CR>", "Explorer" },
   v = { "<cmd>vsplit<CR>", "vsplit" },
   ["/"] = { "<cmd>lua require('Comment.api').toggle.linewise.current()<CR>", "Comment" },
-  c = { "<cmd>Bdelete!<CR>", "Close Buffer" },
+  c = { "<cmd>BufferKill<CR>", "Close Buffer" },
   C = {
     name = "Color Utils",
     p = { "<cmd>CccPick<CR>", "Picker" }

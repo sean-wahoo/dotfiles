@@ -21,4 +21,4 @@ require "user.autocommands"
 require "user.indent"
 require "user.git"
 require "user.lualine"
--- require 'user.neorg'
+require 'user.ufo'

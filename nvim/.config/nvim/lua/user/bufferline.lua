@@ -90,10 +90,6 @@ local function buf_kill(kill_command, bufnr, force)
   buffers = buffers ~= nil and buffers or {}
   windows = windows ~= nil and windows or {}
 
-  for i, w in ipairs(windows) do
-    print(string.format("w: %s, windows[i]: %s", w, windows[i]))
-  end
-
   if #buffers > 1 and #windows > 0 then
     for i, v in ipairs(buffers) do
       if v == bufnr then

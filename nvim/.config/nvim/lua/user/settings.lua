@@ -1,3 +1,4 @@
+print('hah')
 local options = {
 	backup = false,
 	clipboard = "unnamedplus",
@@ -37,9 +38,15 @@ local options = {
 	sidescrolloff = 8,
 	wrap = false,
 	title = true,
+  foldmethod = "expr",
+  foldexpr = "nvim_treesitter#foldexpr()",
+  foldcolumn = '1',
+  foldlevel = 99,
+  foldlevelstart = 99,
+  foldenable = true
 }
 
-vim.opt.fillchars = vim.opt.fillchars + 'eob: '
+vim.opt.fillchars:append 'eob: ,fold: ,foldopen:,foldsep: ,foldclose:'
 
 vim.opt.fillchars:append {
 	stl = ' ',

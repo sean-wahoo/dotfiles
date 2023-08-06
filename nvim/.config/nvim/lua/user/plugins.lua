@@ -49,9 +49,9 @@ return require('packer').startup(function(use)
   use "christianchiarulli/lua-dev.nvim"
 
   -- lsp
-  use "neovim/nvim-lspconfig"
   use "williamboman/mason.nvim"
   use "williamboman/mason-lspconfig.nvim"
+  use "neovim/nvim-lspconfig"
   use "jose-elias-alvarez/null-ls.nvim"
   use {
     "j-hui/fidget.nvim",
@@ -80,6 +80,14 @@ return require('packer').startup(function(use)
       }
     end
   }
+
+  use {
+    "nvimdev/lspsaga.nvim",
+    after = "nvim-lspconfig",
+    config = function()
+      require('lspsaga').setup {}
+    end
+  };
 
   -- treesitter
   use "nvim-treesitter/nvim-treesitter"
@@ -175,8 +183,10 @@ return require('packer').startup(function(use)
     config = function ()
       require 'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
     end
-
   }
+
+  use { "kevinhwang91/nvim-ufo", requires = 'kevinhwang91/promise-async' }
+
   use {
     "ethanholz/nvim-lastplace",
     event = "BufRead",

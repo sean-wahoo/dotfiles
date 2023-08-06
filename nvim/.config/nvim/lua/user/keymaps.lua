@@ -29,3 +29,16 @@ keymap("n", "<leader>v", ":vsp<CR>", opts)
 keymap("n", "<leader>e", ":Lexplore16<CR>", opts)
 
 keymap("n", "<C-p>", ":Telescope find_files<CR>", opts)
+
+keymap("n", "F", "za", opts)
+
+vim.keymap.set("n", "zR", require("ufo").openAllFolds)
+vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
+vim.keymap.set("n", "zr", require("ufo").openFoldsExceptKinds)
+vim.keymap.set("n", "K", function()
+  local winid = require("ufo").peekFoldedLinesUnderCursor()
+  if not winid then
+    vim.lsp.buf.hover()
+    -- vim.cmd [[ Lspsaga hover_doc ]]
+  end
+end)

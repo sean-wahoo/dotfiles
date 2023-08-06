@@ -15,7 +15,9 @@ local servers = {
   'gopls',
   "tailwindcss",
   "intelephense",
-  "pyright"
+  "pyright",
+  "cmake",
+  "clangd"
 }
 
 local settings = {
@@ -44,6 +46,8 @@ end
 
 local opts = {}
 
+local fold_capabilities = vim.lsp.protocol.make_client_capabilities()
+
 for _, server in pairs(servers) do
   opts = {
     on_attach = require("user.lsp.handlers").on_attach,
@@ -57,26 +61,19 @@ for _, server in pairs(servers) do
     opts = vim.tbl_deep_extend("force", tsserver_opts, opts)
   end
 
+  -- if server == 'cmake' then
+  --   local cmake_opts = require "user.lsp.settings.cmake"
+  --   opts = vim.tbl_deep_extend("force", cmake_opts, opts)
+  -- end
   if server == "lua_ls" then
-    -- local l_status_ok, lua_dev = pcall(require, "lua-dev")
-    -- if not l_status_ok then
-    --   return
-    -- end
     local lua_ls_opts = require "user.lsp.settings.lua_ls"
-    -- opts = vim.tbl_deep_extend("force", lua_ls_opts, opts)
-    -- opts = vim.tbl_deep_extend("force", require("lua-dev").setup(), opts)
-    -- local luadev = lua_dev.setup {
-    --   --   -- add any options here, or leave empty to use the default settings
-    --   -- lspconfig = opts,
-    --   lspconfig = {
-    --     on_attach = opts.on_attach,
-    --     capabilities = opts.capabilities,
-    --     --   -- settings = opts.settings,
-    --   },
-    -- }
     lspconfig.lua_ls.setup(lua_ls_opts)
     goto continue
   end
+
+  if opts then opts.capabilities.textDocument.dynamicRegistration = false end
+  if opts then opts.capabilities.textDocument.lineFoldingOnly = true end
+
   lspconfig[server].setup(opts)
   ::continue::
 end
