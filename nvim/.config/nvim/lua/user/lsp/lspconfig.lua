@@ -23,6 +23,7 @@ end
 
 local lsp_servers = {
   terraformls = {},
+  bashls = {},
   ansiblels = {
     filetypes = { 'yaml.ansible', 'yaml' }
   },
