@@ -5,7 +5,7 @@ if status is-interactive
     exec startx -- -keeptty
   end
     # Commands to run in interactive sessions can go here
-    set EDITOR="/usr/bin/nvim"
+    set EDITOR "/usr/bin/nvim"
 
     direnv hook fish | source
 end
