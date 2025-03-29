@@ -1,5 +1,18 @@
 local keymap = vim.api.nvim_set_keymap
 local opts = { noremap = true }
+  if type(rhs) == "function" then
+    vim.keymap.set(mode, lhs, rhs, opts)
+  else
+    vim.api.nvim_set_keymap(mode, lhs, rhs, opts)
+  end
+end
+
+function buf_keymap(bufnr, mode, lhs, rhs, desc, opts)
+  opts = opts or {}
+  if desc then
+    opts.desc = desc
+  end
+  if type(rhs) == "function" then
 
 vim.g.mapleader = ' '
 
