@@ -1,10 +1,11 @@
 if status is-interactive
-  echo "hehe d=$DISPLAY x=$XDG_VTNR"
-
   if test -z "$DISPLAY" -a "$XDG_VTNR" = 1
     exec startx -- -keeptty
   end
+
   set EDITOR "/usr/bin/nvim"
+  set STARSHIP_CONFIG "~/.config/starship/starship.toml"
+
   direnv hook fish | source
   starship init fish | source
 
