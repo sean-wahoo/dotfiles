@@ -47,44 +47,58 @@ local definitions = {
         ]]
       end
     },
+  },
+  {
+    "VimResized",
     {
-      "VimResized",
+	    callback = function()
+	      vim.cmd "tabdo wincmd ="
+	    end
+    }
+  },
+  {
+    "CursorHold",
+    {
       callback = function()
-        vim.cmd "tabdo wincmd ="
+        local ok, luasnip = pcall(require, "luasnip")
+        if not ok then
+          return
+        end
+        if luasnip.expand_or_jumpable() then
+          vim.cmd [[silent! lua require("luasnip").unlink_current()]]
+        end
       end
-    },
+    }
+  },
+  {
+    "BufReadPost",
     {
-      "CursorHold",
-      {
-        callback = function()
-          local ok, luasnip = pcall(require, "luasnip")
-          if not ok then
-            return
-          end
-          if luasnip.expand_or_jumpable() then
-            vim.cmd [[silent! lua require("luasnip").unlink_current()]]
-          end
+      group = "_last_loc",
+      callback = function(event)
+        local exclude = { "gitcommit" }
+        local buf = event.buf
+        if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].last_loc then
+          return
         end
-      }
-    },
+        vim.b[buf].last_loc = true
+        local mark = vim.api.nvim_buf_get_mark(buf, '"')
+        local lcount = vim.api.nvim_buf_line_count(buf)
+        if mark[1] > 0 and mark[1] <= lcount then
+          pcall(vim.api.nvim_win_set_cursor, 0, mark)
+        end
+      end
+    }
+  },
+  {
+    "LspAttach",
     {
-      "BufReadPost",
-      {
-        group = "_last_loc",
-        callback = function(event)
-          local exclude = { "gitcommit" }
-          local buf = event.buf
-          if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].last_loc then
-            return
-          end
-          vim.b[buf].last_loc = true
-          local mark = vim.api.nvim_buf_get_mark(buf, '"')
-          local lcount = vim.api.nvim_buf_line_count(buf)
-          if mark[1] > 0 and mark[1] <= lcount then
-            pcall(vim.api.nvim_win_set_cursor, 0, mark)
-          end
+      callback = function(ev)
+        local client = vim.lsp.get_client_by_id(ev.data.client_id)
+        print(client.id)
+        if client:supports_method('textDocument/completion') then
+          vim.lsp.completion.enable(true, client.id, ev.buf)
         end
-      }
+      end
     }
   }
 }

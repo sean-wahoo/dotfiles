@@ -3,7 +3,7 @@ local default_opts = {
   silent = true
 }
 
-function keymap(mode, lhs, rhs, desc, opts)
+local function keymap(mode, lhs, rhs, desc, opts)
   opts = opts or default_opts
   if desc then
     opts.desc = desc
@@ -15,7 +15,7 @@ function keymap(mode, lhs, rhs, desc, opts)
   end
 end
 
-function buf_keymap(bufnr, mode, lhs, rhs, desc, opts)
+local function buf_keymap(bufnr, mode, lhs, rhs, desc, opts)
   opts = opts or {}
   if desc then
     opts.desc = desc
@@ -35,6 +35,10 @@ keymap('n', '<C-h>', '<C-w>h', "window left")
 keymap('n', '<C-j>', '<C-w>j', "window down")
 keymap('n', '<C-k>', '<C-w>k', "window up")
 keymap('n', '<C-l>', '<C-w>l', "window right")
+
+-- buffer stuff
+keymap('n', '<A-h>', '<cmd>bprev<CR>', "buffer prev")
+keymap('n', '<A-l>', '<cmd>bnext<CR>', "buffer next")
 
 -- file explore
 keymap('n', '<leader>e', ':NvimTreeToggle<cr>', "file tree")

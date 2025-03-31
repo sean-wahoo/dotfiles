@@ -13,9 +13,22 @@ if not ok then
 end
 
 noice.setup {
+  views = {
+    cmdline_popup = {
+      border = {
+        style = "none",
+        padding = { 2, 3 }
+      },
+      filter_options = {},
+      win_options = {
+        winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder"
+      }
+    }
+  },
   cmdline = {
     enabled = true,
     inc_rename = false,
+    -- view = "cmdline"
   },
   lsp = {
     override = {
@@ -39,10 +52,10 @@ noice.setup {
   },
   presets = {
     bottom_search = true,
-    command_palette = true,
+    -- command_palette = true,
     long_message_to_split = true,
     inc_rename = false,
-    lsp_doc_border = true
+    -- lsp_doc_border = true
   },
   notify = {
     enabled = false

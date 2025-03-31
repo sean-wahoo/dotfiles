@@ -25,6 +25,10 @@ end
 MiniPlugins:set_plugin('mini.ai', ai)
 local gen_spec = ai.gen_spec
 
+local win_config = function()
+
+end
+
 local mini_plugins = {
   -- fuzzy = {},
   ai = {
@@ -62,7 +66,10 @@ local mini_plugins = {
   bufremove = {},
   notify = {
     window = {
-      max_width_share = 0.382
+      max_width_share = 0.382,
+      -- config = {
+      --   anchor = 'NE'
+      -- }
     },
     lsp_progress = {
       enable = false
