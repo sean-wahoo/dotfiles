@@ -1,0 +1,102 @@
+local definitions = {
+  {
+    "TextYankPost",
+    {
+      group = "_general_settings",
+      pattern = "*",
+      desc = "Highlight text on yank",
+      callback = function()
+        vim.highlight.on_yank { hlgroup = "Visual", timeout = 40 }
+      end
+    }
+  },
+  {
+    "FileType",
+    {
+      group = "_filetype_settings",
+      pattern = { "lua" },
+      desc = "gf",
+      callback = function()
+        vim.opt_local.include = [[\v<((do|load)file|require|reload)[^''"]*[''"]\zs[^''"]+]]
+        vim.opt_local.includeexpr = "substitute(v:fname,'\\.','/','g')"
+        vim.opt_local.suffixesadd:prepend ".lua"
+        vim.opt_local.suffixesadd:prepend "init.lua"
+
+        for _, path in pairs(vim.api.nvim_list_runtime_paths()) do
+          vim.opt_local.path:append(path .. "/lua")
+        end
+      end
+    }
+  },
+  {
+    "FileType",
+    {
+      pattern = {
+        "netrw",
+        "git",
+        "help",
+        "man",
+        "lspinfo",
+        "DressingSelext",
+        "nvim-tree"
+      },
+      callback = function()
+        vim.cmd [[
+          nnoremap <silent> <buffer> q :close<CR>
+          set nobuflisted
+        ]]
+      end
+    },
+    {
+      "VimResized",
+      callback = function()
+        vim.cmd "tabdo wincmd ="
+      end
+    },
+    {
+      "CursorHold",
+      {
+        callback = function()
+          local ok, luasnip = pcall(require, "luasnip")
+          if not ok then
+            return
+          end
+          if luasnip.expand_or_jumpable() then
+            vim.cmd [[silent! lua require("luasnip").unlink_current()]]
+          end
+        end
+      }
+    },
+    {
+      "BufReadPost",
+      {
+        group = "_last_loc",
+        callback = function(event)
+          local exclude = { "gitcommit" }
+          local buf = event.buf
+          if vim.tbl_contains(exclude, vim.bo[buf].filetype) or vim.b[buf].last_loc then
+            return
+          end
+          vim.b[buf].last_loc = true
+          local mark = vim.api.nvim_buf_get_mark(buf, '"')
+          local lcount = vim.api.nvim_buf_line_count(buf)
+          if mark[1] > 0 and mark[1] <= lcount then
+            pcall(vim.api.nvim_win_set_cursor, 0, mark)
+          end
+        end
+      }
+    }
+  }
+}
+
+for _, entry in ipairs(definitions) do
+  local event = entry[1]
+  local opts = entry[2]
+  if type(opts.group) == "string" and opts.group ~= "" then
+    local exists, _ = pcall(vim.api.nvim_get_autocmds, { group = opts.group })
+    if not exists then
+      vim.api.nvim_create_augroup(opts.group, {})
+    end
+  end
+  vim.api.nvim_create_autocmd(event, opts)
+end

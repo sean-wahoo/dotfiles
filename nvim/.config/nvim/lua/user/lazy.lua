@@ -23,18 +23,56 @@ require("lazy").setup({
   spec = {
     { "rcarriga/nvim-dap-ui",           dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
     { 'nvim-treesitter/nvim-treesitter' },
-    { 'sainnhe/everforest',             lazy = false,                                                     priority = 1000 },
-    { 'echasnovski/mini.nvim',          version = false },
+    {
+      "nvim-treesitter/nvim-treesitter-context"
+    },
+    { 'sainnhe/everforest', lazy = false, priority = 1000 },
+    {
+      'echasnovski/mini.nvim',
+      version = false,
+      dependencies = {
+        'nvim-treesitter/nvim-treesitter-textobjects'
+      }
+    },
     {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
-      "neovim/nvim-lspconfig",
-      "lukas-reineke/lsp-format.nvim"
+      "lukas-reineke/lsp-format.nvim",
+      {
+        "neovim/nvim-lspconfig",
+        event = {
+          "BufReadPre",
+          "BufNewFile"
+        }
+      },
     },
     {
       "nvimdev/lspsaga.nvim",
       dependencies = {
         "nvim-tree/nvim-web-devicons"
+      }
+    },
+    {
+      "ray-x/lsp_signature.nvim",
+      event = "InsertEnter"
+    },
+    {
+      "onsails/lspkind.nvim",
+      event = "InsertEnter"
+    },
+    -- {
+    --   "CosmicNvim/cosmic-ui",
+    --   event = "VeryLazy",
+    --   dependencies = {
+    --     "MunifTanjim/nui.nvim",
+    --     "nvim-lua/plenary.nvim",
+    --   }
+    -- },
+    {
+      "folke/noice.nvim",
+      event = "VeryLazy",
+      dependencies = {
+        "MunifTanjim/nui.nvim"
       }
     },
     {
@@ -50,6 +88,33 @@ require("lazy").setup({
         "L3MON4D3/LuaSnip",
         "windwp/nvim-autopairs"
       }
+    },
+    {
+      'nvim-telescope/telescope.nvim',
+      dependencies = {
+        'nvim-lua/plenary.nvim'
+      }
+    },
+    {
+      "nvim-tree/nvim-tree.lua",
+      lazy = false,
+      dependencies = {
+        "nvim-tree/nvim-web-devicons"
+      }
+    },
+    {
+      "tpope/vim-fugitive",
+      event = "VeryLazy",
+      dependencies = {
+        "lewis6991/gitsigns.nvim"
+      }
+    },
+    {
+      "nvim-lualine/lualine.nvim"
+    },
+    {
+      "lukas-reineke/indent-blankline.nvim",
+      main = "ibl"
     }
   },
   -- Configure any other settings here. See the documentation for more details.
