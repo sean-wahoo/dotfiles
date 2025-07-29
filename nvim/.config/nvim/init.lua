@@ -1,17 +1,22 @@
 vim.loader.enable()
 
-require 'user.autocmds'
-require 'user.options'
-require 'user.lazy'
-require 'user.lsp'
-require 'user.colorscheme'
-require 'user.treesitter'
-require 'user.telescope'
-require 'user.mini'
-require 'user.cmp'
-require 'user.nvimtree'
-require 'user.git'
-require 'user.lualine'
-require 'user.indentblankline'
-require 'user.keymaps'
-require 'user.noice'
+require("user.autocmds")
+require("user.options")
+require("user.lazy")
+require("user.lsp")
+require("user.colorscheme")
+require("user.treesitter")
+require("user.telescope")
+require("user.mini")
+require("user.cmp")
+require("user.nvimtree")
+require("user.git")
+require("user.lualine")
+require("user.indentblankline")
+require("user.keymaps")
+require("user.noice")
+require("user.toggleterm")
+require("user.leap")
+require("user.conform")
+require("user.bufferline")
+require("user.colorizer")

@@ -94,10 +94,47 @@ local definitions = {
     {
       callback = function(ev)
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
-        print(client.id)
         if client:supports_method('textDocument/completion') then
           vim.lsp.completion.enable(true, client.id, ev.buf)
         end
+      end
+    }
+  },
+  {
+    { "BufEnter", "QuitPre" },
+    {
+      nested = false,
+      callback = function (e)
+        local ok, _tree = pcall(require, "nvim-tree.api")
+        if not ok then
+          print("tree api failed")
+          return
+        end
+
+        local tree = _tree.tree
+
+        if not tree.is_visible() then
+          return
+        end
+
+        local winCount = 0
+        for _, winId in ipairs(vim.api.nvim_list_wins()) do
+          if vim.api.nvim_win_get_config(winId).focusable then
+            winCount = winCount + 1
+          end
+        end
+
+        if e.event == 'QuitPre' and winCount == 2 then
+          vim.api.nvim_cmd({ cmd = 'qall' }, {})
+        end
+
+        if e.event == 'BufEnter' and winCount == 1 then
+          vim.defer_fn(function()
+            tree.toggle({ find_file = true, focus = true })
+            tree.toggle({ find_file = true, focus = false })
+          end, 10)
+        end
+        
       end
     }
   }
