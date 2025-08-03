@@ -87,5 +87,9 @@ vim.lsp.config("ts_ls", {
 	capabilites = common_capabilities(),
 	on_attach = on_attach,
 })
+-- vim.lsp.config("ccls", {
+-- 	capabilites = common_capabilities(),
+-- 	on_attach = on_attach,
+-- })
 
 vim.lsp.enable(lsp_servers)
