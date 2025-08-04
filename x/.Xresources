@@ -1,0 +1,112 @@
+! { "normGRIDbgcolor",        STRING,    &normGRIDbgcolor },
+! { "normGRD1bgcolor",        STRING,    &normGRD1bgcolor },
+! { "normGRD2bgcolor",        STRING,    &normGRD2bgcolor },
+! { "normGRDMbgcolor",        STRING,    &normGRDMbgcolor },
+! { "normHGRDbgcolor",        STRING,    &normHGRDbgcolor },
+! { "normDWDLbgcolor",        STRING,    &normDWDLbgcolor },
+! { "normSPRLbgcolor",        STRING,    &normSPRLbgcolor },
+!
+!
+
+!
+! foreground colors
+!
+dwm.normfgcolor: #d3c6aa
+dwm.selfgcolor: #2d3b3b
+dwm.tagsnormfgcolor: #d3c6aa
+dwm.tagsselfgcolor: #2d3b3b
+dwm.titleselfgcolor: #2d353b
+dwm.titlenormfgcolor: #d3c6aa
+dwm.hidnormfgcolor: #d3c6aa
+
+dwm.selTTBfgcolor: #d3c6aa
+dwm.selLTRfgcolor: #d3c6aa
+dwm.selMONOfgcolor: #d3c6aa
+dwm.selGRIDfgcolor: #d3c6aa
+dwm.selGRD1fgcolor: #d3c6aa
+dwm.selGRD2fgcolor: #d3c6aa
+dwm.selGRDMfgcolor: #d3c6aa
+dwm.selHGRDfgcolor: #d3c6aa
+dwm.selDWDLfgcolor: #d3c6aa
+dwm.selSPRLfgcolor: #d3c6aa
+
+dwm.normTTBfgcolor: #2d3b3b
+dwm.normLTRfgcolor: #2d3b3b
+dwm.normMONOfgcolor: #2d3b3b
+dwm.normGRIDfgcolor: #2d3b3b
+dwm.normGRD1fgcolor: #2d3b3b
+dwm.normGRD2fgcolor: #2d3b3b
+dwm.normGRDMfgcolor: #2d3b3b
+dwm.normHGRDfgcolor: #2d3b3b
+dwm.normDWDLfgcolor: #2d3b3b
+dwm.normSPRLfgcolor: #2d3b3b
+
+dwm.actTTBfgcolor: #2d3b3b
+dwm.actLTRfgcolor: #2d3b3b
+dwm.actMONOfgcolor: #2d3b3b
+dwm.actGRIDfgcolor: #2d3b3b
+dwm.actGRD1fgcolor: #2d3b3b
+dwm.actGRD2fgcolor: #2d3b3b
+dwm.actGRDMfgcolor: #2d3b3b
+dwm.actHGRDfgcolor: #2d3b3b
+dwm.actDWDLfgcolor: #2d3b3b
+dwm.actSPRLfgcolor: #2d3b3b
+
+!
+! background colors
+!
+dwm.normbgcolor: #2d353b
+dwm.selbgcolor: #a7c080
+dwm.hidnormbgcolor: #2d353b
+dwm.tagsnormbgcolor: #2d353b
+dwm.tagsselbgcolor: #a7c080
+dwm.normTTBbgcolor: #2d353b
+dwm.normLTRbgcolor: #2d353b
+dwm.normMONObgcolor: #2d353b
+dwm.normGRIDbgcolor: #2d353b
+dwm.normGRD1bgcolor: #2d353b
+dwm.normGRD2bgcolor: #2d353b
+dwm.normGRDMbgcolor: #2d353b
+dwm.normHGRDbgcolor: #2d353b
+dwm.normDWDLbgcolor: #2d353b
+dwm.normSPRLbgcolor: #2d353b
+
+dwm.selTTBbgcolor: #a7c080
+dwm.selLTRbgcolor: #a7c080
+dwm.selMONObgcolor: #a7c080
+dwm.selGRIDbgcolor: #a7c080
+dwm.selGRD1bgcolor: #a7c080
+dwm.selGRD2bgcolor: #a7c080
+dwm.selGRDMbgcolor: #a7c080
+dwm.selHGRDbgcolor: #a7c080
+dwm.selDWDLbgcolor: #a7c080
+dwm.selSPRLbgcolor: #a7c080
+
+dwm.actTTBbgcolor: #2d353b
+dwm.actLTRbgcolor: #2d353b
+dwm.actMONObgcolor: #2d353b
+dwm.actGRIDbgcolor: #2d353b
+dwm.actGRD1bgcolor: #2d353b
+dwm.actGRD2bgcolor: #2d353b
+dwm.actGRDMbgcolor: #2d353b
+dwm.actHGRDbgcolor: #2d353b
+dwm.actDWDLbgcolor: #2d353b
+dwm.actSPRLbgcolor: #2d353b
+
+!
+! border colors
+!
+dwm.normbordercolor: #2d353b
+dwm.selbordercolor: #a7c080
+dwm.hidnormbordercolor: #a7c080
+dwm.normfloatcolor: #a7c080
+dwm.selfloatcolor: #a7c080
+dwm.hidnormfloatcolor: #a7c080
+
+dwm.titleselbgcolor: #000000
+dwm.titlenormbgcolor: #2d353b
+! dwm.hidselbgcolor: #d3c6aa
+! dwm.hidselfgcolor: #2d353b
+! dwm.hidnormbgcolor: #d3c6aa
+! dwm.hidnormfgcolor: #2d353b
+
