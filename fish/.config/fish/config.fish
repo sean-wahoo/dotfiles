@@ -5,6 +5,8 @@ if status is-interactive
 
   set EDITOR "/usr/bin/nvim"
   set STARSHIP_CONFIG "~/.config/starship/starship.toml"
+  set XDG_CONFIG_DIR "/home/sean"
+  set XINITRC "/home/sean/.xinitrc"
 
   #direnv hook fish | source
   #starship init fish | source

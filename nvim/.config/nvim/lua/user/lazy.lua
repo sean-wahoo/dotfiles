@@ -84,6 +84,8 @@ require("lazy").setup({
 				"MunifTanjim/nui.nvim",
 			},
 		},
+		{ "wavded/vim-stylus", event = "VeryLazy" },
+		{ "digitaltoad/vim-pug", event = "VeryLazy" },
 		{
 			"hrsh7th/nvim-cmp",
 			event = { "InsertEnter", "CmdlineEnter" },
@@ -121,6 +123,9 @@ require("lazy").setup({
 			dependencies = {
 				"lewis6991/gitsigns.nvim",
 			},
+		},
+		{
+			"f-person/git-blame.nvim",
 		},
 		{
 			"nvim-lualine/lualine.nvim",
