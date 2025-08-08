@@ -11,11 +11,6 @@ local MiniPlugins = {
 	end,
 }
 
-local function bungs()
-	-- hehehe
-	-- --oeoeoe
-end
-
 local ai_ok, ai = pcall(require, "mini.ai")
 if not ai_ok then
 	print("ai oop")
@@ -24,7 +19,12 @@ end
 MiniPlugins:set_plugin("mini.ai", ai)
 local gen_spec = ai.gen_spec
 
-local win_config = function() end
+local hi_ok, hi = pcall(require, "mini.hipatterns")
+if not hi_ok then
+	print("hipatterns oop")
+	return
+end
+MiniPlugins:set_plugin("mini.hipatterns", hi)
 
 local mini_plugins = {
 	-- fuzzy = {},
@@ -48,20 +48,50 @@ local mini_plugins = {
 	pairs = {},
 	-- tabline = {},
 	-- git = {},
+	-- statusline = {},
 	icons = {},
 	-- completion = {
-	--   mappings = {
+	-- 	lsp_completion = {
+	-- 		source_func = "completefunc",
+	-- 		auto_setup = true,
+	-- 	},
+	-- mappings = {
 	--
-	--   },
-	--   set_vim_settings = true
 	-- },
+	-- set_vim_settings = true
+	-- },
+	-- map = {},
+	animate = {
+		cursor = {
+			enable = false,
+		},
+		scroll = {
+			enable = true,
+		},
+		resize = {
+			enable = true,
+		},
+	},
+	hipatters = {
+		highlighters = {
+			hi.gen_highlighter.hex_color(),
+		},
+	},
 	comment = {
 		mappings = {
 			comment_line = "<leader>/",
 			comment_visual = "<leader>/",
 		},
 	},
+	starter = {},
+	basics = {},
+	extra = {},
+	surround = {},
+	sessions = {
+		autoread = true,
+	},
 	bufremove = {},
+	indentscope = {},
 	notify = {
 		window = {
 			max_width_share = 0.382,
@@ -97,6 +127,8 @@ for k, v in pairs(mini_plugins) do
 	::continue::
 end
 
-if not errors.notify then
-	vim.notify = MiniPlugins:get_plugin("notify").make_notify()
-end
+-- if not errors.notify then
+-- 	vim.notify = MiniPlugins:get_plugin("notify").make_notify()
+-- 	vim.notify("heheh")
+-- end
+vim.notify("hehe")

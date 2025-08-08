@@ -27,7 +27,9 @@ require("lazy").setup({
 			"nvim-treesitter/nvim-treesitter-context",
 		},
 		{ "windwp/nvim-ts-autotag", event = "VeryLazy" },
+		-- colorscheme
 		{ "sainnhe/everforest", lazy = false, priority = 1000 },
+		{ "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
 		{ "stevearc/conform.nvim" },
 		{ "akinsho/bufferline.nvim" },
 		{
@@ -38,7 +40,6 @@ require("lazy").setup({
 			},
 		},
 		{ "akinsho/toggleterm.nvim", version = "*", config = true, event = "VeryLazy" },
-		{ "norcalli/nvim-colorizer.lua" },
 		{
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
