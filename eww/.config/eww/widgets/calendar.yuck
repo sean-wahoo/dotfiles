@@ -1,0 +1,22 @@
+(defwindow calendar
+  :monitor '["eDP-1", "DP-4-1"]'
+  :geometry (geometry
+    :x "24px"
+    :y "324px"
+    :width "600px"
+    :height "420px"
+    :anchor "top left"
+  )
+  :stacking "bg"
+  :windowtype "desktop"
+  :wm-ignore true
+  (calendar-widget)
+)
+
+(defwidget calendar-widget []
+  (box
+    :halign 'center'
+    :valign 'center'
+    (calendar)
+  )
+)

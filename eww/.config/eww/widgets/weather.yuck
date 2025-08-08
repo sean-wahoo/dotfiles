@@ -1,0 +1,80 @@
+(defvar weather_icon "04n")
+
+(defpoll weather-json
+  :interval "1s" 
+  :initial "{}"
+  :run-while true
+`~/.config/eww/scripts/get_weather.sh`)
+
+(defpoll time
+  :interval "1s"
+  :initial: "hehe"
+  :run-while true
+`date +"%I:%M %p"`)
+
+(defpoll date
+  :interval "1s"
+  :initial: "hehe"
+  :run-while true
+`date +"%A, %B%e"`)
+
+(defwindow weather
+  :monitor '["eDP-1", "DP-4-1"]'
+  :geometry (geometry
+    :x "24px"
+    :y "48px"
+    :width "760px"
+    :height "260px"
+    :anchor "top left"
+  )
+  :stacking "bg"
+  :windowtype "desktop"
+  :wm-ignore true
+(weather-widget))
+
+
+(defwidget weather-widget []
+  (box
+    :halign 'center'
+    :valign 'center'
+    :space-evenly true
+    :orientation 'horizontal'
+    (box
+      :orientation "vertical"
+      :valign "center"
+
+      (label
+        :class "time"
+        :text "${time}"
+        :xalign 0
+      )
+      (label
+        :class "date"
+        :text "${date}"
+        :xalign 0
+      )
+    )
+    ;(image
+    ;  :class 'weather-icon'
+    ;  :path "/home/sean/.config/eww/icons/_weather_${weather_icon}.png"
+    ;)
+    (centerbox
+      :orientation "vertical"
+      (label
+        :class "temp"
+        :text "${weather-json?.main?.temp}°F"
+        :xalign 1
+      )
+      (label
+        :class "feels_like"
+        :text 'feels like ${weather-json?.main?.feels_like}°F'
+        :xalign 1
+      )
+      (label
+        :class "condition"
+        :text '${weather-json?.weather?.[0]?.description}'
+        :xalign 1
+      )
+    )
+  )
+)
