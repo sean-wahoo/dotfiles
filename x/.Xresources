@@ -7,6 +7,10 @@
 ! { "normSPRLbgcolor",        STRING,    &normSPRLbgcolor },
 !
 !
+!
+Xcursor.theme: pixelfun2
+! Xcursor.theme: pixelitos-dark
+! Xcursor.theme: pixelitos-icon-theme/pixelitos-dark
 
 !
 ! foreground colors

@@ -3,10 +3,12 @@ if status is-interactive
     exec startx -- -keeptty
   end
 
-  set EDITOR "/usr/bin/nvim"
+  set EDITOR "nvim"
   set STARSHIP_CONFIG "~/.config/starship/starship.toml"
-  set XDG_CONFIG_DIR "/home/sean"
+  set XDG_CONFIG_HOME "/home/sean/.config"
   set XINITRC "/home/sean/.xinitrc"
+  set XCURSOR_THEME "pixelfun2"
+  set XDG_CONFIG_HOME "/home/sean/.config"
 
   #direnv hook fish | source
   #starship init fish | source

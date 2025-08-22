@@ -1,2 +1,4 @@
 dwm.bak*
-.ccls-cache
+.ccls-cache/*
+*.log
+Session.vim
