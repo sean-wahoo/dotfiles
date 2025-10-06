@@ -140,6 +140,7 @@ local definitions = {
   }
 }
 
+
 for _, entry in ipairs(definitions) do
   local event = entry[1]
   local opts = entry[2]

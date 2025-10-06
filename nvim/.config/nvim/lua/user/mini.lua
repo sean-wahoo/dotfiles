@@ -26,14 +26,26 @@ if not hi_ok then
 end
 MiniPlugins:set_plugin("mini.hipatterns", hi)
 
+require("ts_context_commentstring").setup({
+	enable_autocmd = false,
+})
+
 local mini_plugins = {
 	-- fuzzy = {},
 	ai = {
 		custom_textobjects = {
-			f = gen_spec.treesitter({
-				a = "@function.outer",
-				i = "@function.inner",
-			}),
+			-- f = gen_spec.treesitter({
+			-- 	a = "@function.outer",
+			-- 	i = "@function.inner",
+			-- }),
+			T = function()
+				local tag_name = vim.pesc(vim.fn.input("Tag name: "))
+				local left_edge = "<" .. tag_name .. ".>"
+				local right_edge = "</" .. tag_name .. ">"
+				-- return { { left_edge }, "^().*()$" }
+				return { { left_edge .. right_edge }, "^<.->.*</[^/]->$" }
+				-- return MiniAi.gen_spec.pair(left_edge, right_edge)
+			end,
 			-- c = gen_spec.treesitter({
 			--   a = '@conditional.outer',
 			--   i = '@conditional.inner',
@@ -43,6 +55,7 @@ local mini_plugins = {
 			--   i = { '@block.inner', '@conditional.inner' }
 			-- })
 		},
+		search_method = "cover_or_nearest",
 	},
 	-- clue elsewhere
 	pairs = {},
@@ -72,12 +85,17 @@ local mini_plugins = {
 			enable = true,
 		},
 	},
-	hipatters = {
-		highlighters = {
-			hi.gen_highlighter.hex_color(),
-		},
-	},
+	-- hipatters = {
+	-- 	highlighters = {
+	-- 		hi.gen_highlighter.hex_color(),
+	-- 	},
+	-- },
 	comment = {
+		options = {
+			custom_commentstring = function()
+				return require("ts_context_commentstring").calculate_commentstring() or vim.bo.commentstring
+			end,
+		},
 		mappings = {
 			comment_line = "<leader>/",
 			comment_visual = "<leader>/",
@@ -109,6 +127,16 @@ local errors = {}
 
 MiniPlugins:set_plugin("mini.ai", ai)
 
+local get_option = vim.filetype.get_option
+vim.filetype.get_option = function(filetype, option)
+	local ret_func = get_option
+	if option == "commentstring" then
+		ret_func = require("ts_context_commentstring.internal").calculate_commentstring
+	end
+
+	return ret_func(filetype, option)
+end
+
 for k, v in pairs(mini_plugins) do
 	local p = MiniPlugins:get_plugin(k)
 	if not p then
@@ -131,4 +159,3 @@ end
 -- 	vim.notify = MiniPlugins:get_plugin("notify").make_notify()
 -- 	vim.notify("heheh")
 -- end
-vim.notify("hehe")

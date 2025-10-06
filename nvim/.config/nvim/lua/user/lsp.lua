@@ -7,21 +7,16 @@ for file in files do
 	table.insert(lsp_servers, lsp_name)
 end
 
-local lspsaga_ok, lspsaga = pcall(require, "lspsaga")
-if not lspsaga_ok then
-	print("lspsaga failed to load")
+local m_ok, mason = pcall(require, "mason")
+if not m_ok then
+	print("mason failed")
 else
-	lspsaga.setup({
-		lightbulb = {
-			virtual_text = false,
-		},
-		ui = {
-			code_action = "",
-		},
+	mason.setup({
+		ensure_installed = { "lua-language-server", "typescript-language-server", "bash-language-server" },
 	})
 end
 
-local lspkind_ok, lspkind = pcall(require, "lspsaga")
+local lspkind_ok, lspkind = pcall(require, "lspkind")
 if not lspkind_ok then
 	print("lspkind failed to load")
 else
@@ -35,15 +30,15 @@ local function lsp_keymaps(bufnr)
 	if km_utils_ok then
 		keymap = km_utils.buf_keymap
 	end
-	keymap(bufnr, "n", "<leader>lD", "<cmd>lua vim.lsp.buf.declaration()<CR>", "goto declaration", opts)
-	keymap(bufnr, "n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<CR>", "goto definition", opts)
-	keymap(bufnr, "n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<CR>", "signature help", opts)
-	keymap(bufnr, "n", "<leader>la", "<cmd>Lspsaga code_action<CR>", "code action", opts)
-	keymap(bufnr, "n", "K", "<cmd>Lspsaga hover_doc<CR>", "hover", opts)
-	keymap(bufnr, "n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", "goto implementation", opts)
-	keymap(bufnr, "n", "<leader>ll", "<cmd>lua vim.diagnostic.open_float()<CR>", "open float", opts)
-	keymap(bufnr, "n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", "rename", opts)
+	-- keymap(bufnr, "n", "<leader>lD", "<cmd>lua vim.lsp.buf.declaration()<CR>", "goto declaration", opts)
+	-- keymap(bufnr, "n", "<leader>ld", "<cmd>lua vim.lsp.buf.definition()<CR>", "goto definition", opts)
+	-- keymap(bufnr, "n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<CR>", "signature help", opts)
+	-- keymap(bufnr, "n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", "code action", opts)
+	-- keymap(bufnr, "n", "K", "<cmd>Lspsaga hover_doc<CR>", "hover", opts)
+	-- keymap(bufnr, "n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", "goto implementation", opts)
 	-- keymap(bufnr, "n", "<leader>ll", "<cmd>lua vim.diagnostic.open_float()<CR>", "open float", opts)
+	-- keymap(bufnr, "n", l<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", "rename", opts)
+	keymap(bufnr, "n", "<leader>ll", "<cmd>lua vim.diagnostic.open_float()<CR>", "open float", opts)
 end
 
 vim.diagnostic.config({
@@ -58,11 +53,6 @@ vim.diagnostic.config({
 })
 
 local function common_capabilities()
-	local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-	if ok then
-		return cmp_nvim_lsp.default_capabilities()
-	end
-
 	local capabilities = vim.lsp.protocol.make_client_capabilities()
 	capabilities.textDocument.completion.completionItem.snippetSupport = true
 	capabilities.textDocument.completion.completionItem.resolveSupport = {
@@ -72,6 +62,10 @@ local function common_capabilities()
 			"additionalTextEdits",
 		},
 	}
+	local ok, blink_cmp = pcall(require, "blink.cmp")
+	if ok then
+		capabilities = blink_cmp.get_lsp_capabilities(capabilities)
+	end
 	return capabilities
 end
 
@@ -87,9 +81,4 @@ vim.lsp.config("ts_ls", {
 	capabilites = common_capabilities(),
 	on_attach = on_attach,
 })
--- vim.lsp.config("ccls", {
--- 	capabilites = common_capabilities(),
--- 	on_attach = on_attach,
--- })
-
 vim.lsp.enable(lsp_servers)

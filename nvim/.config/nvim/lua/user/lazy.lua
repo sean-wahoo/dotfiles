@@ -18,39 +18,49 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+--
 -- Setup lazy.nvim
 require("lazy").setup({
 	spec = {
 		{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
-		{ "nvim-treesitter/nvim-treesitter" },
+		{ "nvim-treesitter/nvim-treesitter", branch = "main", lazy = false, build = ":TSUpdate" },
+		{ "nvim-treesitter/nvim-treesitter-context" },
+		{ "neovim/nvim-lspconfig" },
 		{
-			"nvim-treesitter/nvim-treesitter-context",
+			"nvimtools/none-ls.nvim",
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+			},
 		},
+		{ "JoosepAlviste/nvim-ts-context-commentstring" },
 		{ "windwp/nvim-ts-autotag", event = "VeryLazy" },
 		-- colorscheme
 		{ "sainnhe/everforest", lazy = false, priority = 1000 },
 		{ "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
+
+		{ "norcalli/nvim-colorizer.lua" },
 		{ "stevearc/conform.nvim" },
 		{ "akinsho/bufferline.nvim" },
 		{
 			"echasnovski/mini.nvim",
 			version = false,
-			dependencies = {
-				"nvim-treesitter/nvim-treesitter-textobjects",
-			},
+			-- dependencies = {
+			-- 	"nvim-treesitter/nvim-treesitter-textobjects",
+			-- },
 		},
 		{ "akinsho/toggleterm.nvim", version = "*", config = true, event = "VeryLazy" },
+
 		{
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"lukas-reineke/lsp-format.nvim",
-			{
-				"neovim/nvim-lspconfig",
-				event = {
-					"BufReadPre",
-					"BufNewFile",
-				},
-			},
+			-- {
+			-- 	"neovim/nvim-lspconfig",
+			-- 	event = {
+			-- 		"BufReadPre",
+			-- 		"BufNewFile",
+			-- 	},
+			-- },
 		},
 		{
 			"ggandor/leap.nvim",
@@ -81,23 +91,33 @@ require("lazy").setup({
 			"folke/noice.nvim",
 			event = "VeryLazy",
 			dependencies = {
-				"MunifTanjim/nui.nvim",
-			},
+          "MunifTanjim/nui.nvim",
+        },
 		},
-		{ "wavded/vim-stylus", event = "VeryLazy" },
-		{ "digitaltoad/vim-pug", event = "VeryLazy" },
+		-- {
+		-- 	"hrsh7th/nvim-cmp",
+		-- 	event = { "InsertEnter", "CmdlineEnter" },
+		-- 	dependencies = {
+		-- 		"hrsh7th/cmp-nvim-lsp",
+		-- 		"hrsh7th/cmp-nvim-lsp",
+		-- 		"hrsh7th/cmp-buffer",
+		-- 		"hrsh7th/cmp-path",
+		-- 		"hrsh7th/cmp-cmdline",
+		-- 		"abeldekat/cmp-mini-snippets",
+		-- 		"L3MON4D3/LuaSnip",
+		-- 		"windwp/nvim-autopairs",
+		-- 	},
+		-- },
 		{
-			"hrsh7th/nvim-cmp",
-			event = { "InsertEnter", "CmdlineEnter" },
+			"saghen/blink.cmp",
+			dependencies = { "rafamadriz/friendly-snippets" },
+			version = "1.*",
+			opts_extend = { "sources.default" },
+		},
+		{
+			"milanglacier/minuet-ai.nvim",
 			dependencies = {
-				"hrsh7th/cmp-nvim-lsp",
-				"hrsh7th/cmp-nvim-lsp",
-				"hrsh7th/cmp-buffer",
-				"hrsh7th/cmp-path",
-				"hrsh7th/cmp-cmdline",
-				"abeldekat/cmp-mini-snippets",
-				"L3MON4D3/LuaSnip",
-				"windwp/nvim-autopairs",
+				"Davidyz/VectorCode",
 			},
 		},
 		{
@@ -106,10 +126,13 @@ require("lazy").setup({
 				"nvim-lua/plenary.nvim",
 			},
 		},
-		{
-			"pmizio/typescript-tools.nvim",
-			dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-		},
+		-- {
+		-- "pmizio/typescript-tools.nvim",
+		-- dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
+		-- config = function()
+		--   require("typescript-tools").setup {}
+		-- end,
+		-- },
 		{
 			"nvim-tree/nvim-tree.lua",
 			lazy = false,
