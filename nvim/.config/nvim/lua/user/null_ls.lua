@@ -13,7 +13,7 @@ null_ls.setup({
 
 		null_ls.builtins.completion.luasnip,
 		null_ls.builtins.completion.nvim_snippets,
-		null_ls.builtins.completion.vsnip,
+		-- null_ls.builtins.completion.vsnip,
 
 		null_ls.builtins.diagnostics.stylint,
 		null_ls.builtins.diagnostics.yamllint,

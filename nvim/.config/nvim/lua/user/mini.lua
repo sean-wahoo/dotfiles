@@ -30,6 +30,14 @@ require("ts_context_commentstring").setup({
 	enable_autocmd = false,
 })
 
+vim.filetype.add({
+	extension = {
+		tsx = "typescriptreact",
+	},
+})
+
+-- require("nvim-treesitter.parsers").filetype_to_parsername.typescriptreact = "tsx"
+
 local mini_plugins = {
 	-- fuzzy = {},
 	ai = {
@@ -40,11 +48,22 @@ local mini_plugins = {
 			-- }),
 			T = function()
 				local tag_name = vim.pesc(vim.fn.input("Tag name: "))
-				local left_edge = "<" .. tag_name .. ".>"
-				local right_edge = "</" .. tag_name .. ">"
-				-- return { { left_edge }, "^().*()$" }
-				return { { left_edge .. right_edge }, "^<.->.*</[^/]->$" }
-				-- return MiniAi.gen_spec.pair(left_edge, right_edge)
+
+				return gen_spec.treesitter({
+					a = "@outer",
+					i = "@inner",
+				}, {
+					query_group = "textobjects",
+					query_file = "tsx",
+					predicate = function(textobject, node, capture)
+						print(capture)
+						if capture == "tag" then
+							local name = vim.treesitter.get_node_text(node, 0)
+							return name == tag_name
+						end
+						return true
+					end,
+				})
 			end,
 			-- c = gen_spec.treesitter({
 			--   a = '@conditional.outer',
@@ -61,7 +80,6 @@ local mini_plugins = {
 	pairs = {},
 	-- tabline = {},
 	-- git = {},
-	-- statusline = {},
 	icons = {},
 	-- completion = {
 	-- 	lsp_completion = {

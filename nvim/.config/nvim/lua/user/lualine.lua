@@ -18,6 +18,7 @@ lualine.setup({
 			"encoding",
 			"fileformat",
 			"filetype",
+			"lsp_status",
 		},
 	},
 })

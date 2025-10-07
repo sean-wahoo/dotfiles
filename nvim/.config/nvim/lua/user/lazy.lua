@@ -42,7 +42,7 @@ require("lazy").setup({
 		{ "stevearc/conform.nvim" },
 		{ "akinsho/bufferline.nvim" },
 		{
-			"echasnovski/mini.nvim",
+			"nvim-mini/mini.nvim",
 			version = false,
 			-- dependencies = {
 			-- 	"nvim-treesitter/nvim-treesitter-textobjects",
@@ -91,8 +91,8 @@ require("lazy").setup({
 			"folke/noice.nvim",
 			event = "VeryLazy",
 			dependencies = {
-          "MunifTanjim/nui.nvim",
-        },
+				"MunifTanjim/nui.nvim",
+			},
 		},
 		-- {
 		-- 	"hrsh7th/nvim-cmp",
@@ -110,7 +110,12 @@ require("lazy").setup({
 		-- },
 		{
 			"saghen/blink.cmp",
-			dependencies = { "rafamadriz/friendly-snippets" },
+			dependencies = {
+				-- "abeldekat/cmp-mini-snippets",
+				"L3MON4D3/LuaSnip",
+				"windwp/nvim-autopairs",
+				"rafamadriz/friendly-snippets",
+			},
 			version = "1.*",
 			opts_extend = { "sources.default" },
 		},
