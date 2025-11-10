@@ -30,49 +30,18 @@ require("ts_context_commentstring").setup({
 	enable_autocmd = false,
 })
 
-vim.filetype.add({
-	extension = {
-		tsx = "typescriptreact",
-	},
-})
-
--- require("nvim-treesitter.parsers").filetype_to_parsername.typescriptreact = "tsx"
-
 local mini_plugins = {
 	-- fuzzy = {},
 	ai = {
 		custom_textobjects = {
-			-- f = gen_spec.treesitter({
-			-- 	a = "@function.outer",
-			-- 	i = "@function.inner",
-			-- }),
-			T = function()
-				local tag_name = vim.pesc(vim.fn.input("Tag name: "))
-
-				return gen_spec.treesitter({
-					a = "@outer",
-					i = "@inner",
-				}, {
-					query_group = "textobjects",
-					query_file = "tsx",
-					predicate = function(textobject, node, capture)
-						print(capture)
-						if capture == "tag" then
-							local name = vim.treesitter.get_node_text(node, 0)
-							return name == tag_name
-						end
-						return true
-					end,
-				})
-			end,
-			-- c = gen_spec.treesitter({
-			--   a = '@conditional.outer',
-			--   i = '@conditional.inner',
-			-- }),
-			-- o = gen_spec.treesitter({
-			--   a = { '@block.outer', '@conditional.outer' },
-			--   i = { '@block.inner', '@conditional.inner' }
-			-- })
+			c = gen_spec.treesitter({
+				a = "@conditional.outer",
+				i = "@conditional.inner",
+			}),
+			o = gen_spec.treesitter({
+				a = { "@block.outer", "@conditional.outer" },
+				i = { "@block.inner", "@conditional.inner" },
+			}),
 		},
 		search_method = "cover_or_nearest",
 	},
@@ -92,6 +61,7 @@ local mini_plugins = {
 	-- set_vim_settings = true
 	-- },
 	-- map = {},
+	snippets = {},
 	animate = {
 		cursor = {
 			enable = false,
@@ -101,6 +71,12 @@ local mini_plugins = {
 		},
 		resize = {
 			enable = true,
+		},
+		open = {
+			enable = false,
+		},
+		close = {
+			enable = false,
 		},
 	},
 	-- hipatters = {
@@ -122,7 +98,7 @@ local mini_plugins = {
 	starter = {},
 	basics = {},
 	extra = {},
-	surround = {},
+	jump = {},
 	sessions = {
 		autoread = true,
 	},
@@ -131,9 +107,6 @@ local mini_plugins = {
 	notify = {
 		window = {
 			max_width_share = 0.382,
-			-- config = {
-			--   anchor = 'NE'
-			-- }
 		},
 		lsp_progress = {
 			enable = false,

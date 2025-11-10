@@ -36,6 +36,16 @@ keymap("n", "<C-j>", "<C-w>j", "window down")
 keymap("n", "<C-k>", "<C-w>k", "window up")
 keymap("n", "<C-l>", "<C-w>l", "window right")
 
+-- keymap("n", "<A-h>", "<cmd>vertical resize +4", "grow window horizontal")
+-- keymap("n", "<A-l>", "<cmd>vertical resize -4", "shrink window horizontal")
+-- keymap("n", "<A-j>", "<cmd>vertical resize +4", "grow window horizontal")
+-- keymap("n", "<A-l>", "<cmd>vertical resize -4", "shrink window horizontal")
+
+keymap("n", "<C-A-h>", "<cmd>vertical resize +8<CR>", "increase window width")
+keymap("n", "<C-A-l>", "<cmd>vertical resize -8<CR>", "decrease window width")
+keymap("n", "<C-A-j>", "<cmd>resize +4<CR>", "increase window height")
+keymap("n", "<C-A-k>", "<cmd>resize -4<CR>", "decrease window height")
+
 -- buffer stuff
 keymap("n", "<S-h>", "<cmd>bprev<CR>", "buffer prev")
 keymap("n", "<S-l>", "<cmd>bnext<CR>", "buffer next")
@@ -67,14 +77,14 @@ if not ok then
 else
 	keymap("n", "<leader>ga", "<cmd>Git add %", "git add current file")
 	keymap("n", "<leader>gA", "<cmd>Git add .", "git add all")
-
-	keymap(
-		"v",
-		"<leader>gs",
-		[[
-
-  ]]
-	)
+	--
+	-- keymap(
+	-- 	"v",
+	-- 	"<leader>gs",
+	-- 	[[
+	--
+	--  ]]
+	-- )
 end
 
 -- keymap("x", "<leader>v", function ()
@@ -106,6 +116,7 @@ else
 			clue.gen_clues.windows(),
 			clue.gen_clues.registers(),
 			clue.gen_clues.z(),
+			-- clue.gen_clues.s(),
 			-- clue.gen_clues.a(),
 		},
 	})

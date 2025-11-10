@@ -25,8 +25,9 @@ keymap("v", "<leader>gs", toggle_stage_selection, "toggle stage selection")
 keymap("n", "<leader>gc", create_commit, "commit changes")
 keymap("n", "<leader>gv", gitsigns.preview_hunk_inline, "preview hunk/diff")
 
--- vim.cmd[[
---
--- ]]
-
-gitsigns.setup({})
+gitsigns.setup({
+	current_line_blame = true,
+	current_line_blame_opts = {
+		virt_text_priority = 100,
+	},
+})

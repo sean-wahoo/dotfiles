@@ -51,17 +51,24 @@ local blink_config = {
 	keymap = {
 		preset = "default",
 	},
-	sources = {
-		default = { "lsp", "path", "snippets", "buffer" },
-		providers = {
-			minuet = {
-				name = "minuet",
-				module = "minuet.blink",
-				async = true,
-				timeout_ms = 3000,
-				score_offset = 100,
-			},
+	snippets = {
+		preset = "luasnip",
+	},
+	fuzzy = {
+		implementation = "prefer_rust_with_warning",
+		sorts = {
+			"exact",
+			function(a, b)
+				if (a.client_name == nil or b.client_name == nil) or (a.client_name == b.client_name) then
+					return
+				end
+			end,
+			"score",
+			"sort_text",
 		},
+	},
+	sources = {
+		default = { "lsp", "snippets", "buffer", "path" },
 	},
 	completion = {
 		menu = {

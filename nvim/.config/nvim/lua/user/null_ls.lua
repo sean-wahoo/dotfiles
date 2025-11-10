@@ -8,17 +8,16 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 null_ls.setup({
 	sources = {
 		null_ls.builtins.formatting.stylua,
-		null_ls.builtins.formatting.prettierd,
+		null_ls.builtins.formatting.prettierd.with({
+			disabled_filetypes = { "markdown.mdx" },
+		}),
 		null_ls.builtins.formatting.yamlfmt,
 
 		null_ls.builtins.completion.luasnip,
-		null_ls.builtins.completion.nvim_snippets,
-		-- null_ls.builtins.completion.vsnip,
+		-- null_ls.builtins.completion.nvim_snippets,
 
-		null_ls.builtins.diagnostics.stylint,
+		-- null_ls.builtins.diagnostics.stylelint,
 		null_ls.builtins.diagnostics.yamllint,
-
-		-- null_ls.builtins.diagnostics.nvim_create_autocmd,
 	},
 	on_attach = function(client, bufnr)
 		if client.supports_method("textDocument/formatting") then

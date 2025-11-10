@@ -25,6 +25,17 @@ require("lazy").setup({
 		{ "rcarriga/nvim-dap-ui", dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" } },
 		{ "nvim-treesitter/nvim-treesitter", branch = "main", lazy = false, build = ":TSUpdate" },
 		{ "nvim-treesitter/nvim-treesitter-context" },
+		{ "rcarriga/nvim-notify" },
+		{
+			"vyfor/cord.nvim",
+			build = ":Cord update",
+		},
+		{
+			"kylechui/nvim-surround",
+			config = function()
+				require("nvim-surround").setup({})
+			end,
+		},
 		{ "neovim/nvim-lspconfig" },
 		{
 			"nvimtools/none-ls.nvim",
@@ -34,9 +45,11 @@ require("lazy").setup({
 		},
 		{ "JoosepAlviste/nvim-ts-context-commentstring" },
 		{ "windwp/nvim-ts-autotag", event = "VeryLazy" },
+
 		-- colorscheme
 		{ "sainnhe/everforest", lazy = false, priority = 1000 },
 		{ "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
+		{ "catppuccin/nvim" },
 
 		{ "norcalli/nvim-colorizer.lua" },
 		{ "stevearc/conform.nvim" },
@@ -44,9 +57,12 @@ require("lazy").setup({
 		{
 			"nvim-mini/mini.nvim",
 			version = false,
-			-- dependencies = {
-			-- 	"nvim-treesitter/nvim-treesitter-textobjects",
-			-- },
+			dependencies = {
+				{
+					"nvim-treesitter/nvim-treesitter-textobjects",
+					branch = "main",
+				},
+			},
 		},
 		{ "akinsho/toggleterm.nvim", version = "*", config = true, event = "VeryLazy" },
 
@@ -54,13 +70,11 @@ require("lazy").setup({
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
 			"lukas-reineke/lsp-format.nvim",
-			-- {
-			-- 	"neovim/nvim-lspconfig",
-			-- 	event = {
-			-- 		"BufReadPre",
-			-- 		"BufNewFile",
-			-- 	},
-			-- },
+		},
+		{
+			"rachartier/tiny-inline-diagnostic.nvim",
+			event = "VeryLazy",
+			priority = 1000,
 		},
 		{
 			"ggandor/leap.nvim",
@@ -71,6 +85,8 @@ require("lazy").setup({
 				"nvim-tree/nvim-web-devicons",
 			},
 		},
+
+		{ "kevinhwang91/nvim-ufo", dependencies = { "kevinhwang91/promise-async" } },
 		{
 			"ray-x/lsp_signature.nvim",
 			event = "InsertEnter",
@@ -94,6 +110,17 @@ require("lazy").setup({
 				"MunifTanjim/nui.nvim",
 			},
 		},
+		{
+			"folke/twilight.nvim",
+		},
+
+		{
+			"nvim-zh/colorful-winsep.nvim",
+			config = true,
+		},
+		{
+			"xiyaowong/transparent.nvim",
+		},
 		-- {
 		-- 	"hrsh7th/nvim-cmp",
 		-- 	event = { "InsertEnter", "CmdlineEnter" },
@@ -109,10 +136,20 @@ require("lazy").setup({
 		-- 	},
 		-- },
 		{
+			"folke/trouble.nvim",
+			cmd = "Trouble",
+		},
+		{
+			"artemave/workspace-diagnostics.nvim",
+		},
+		{
 			"saghen/blink.cmp",
 			dependencies = {
 				-- "abeldekat/cmp-mini-snippets",
-				"L3MON4D3/LuaSnip",
+				{
+					"L3MON4D3/LuaSnip",
+					build = "make install_jsregexp",
+				},
 				"windwp/nvim-autopairs",
 				"rafamadriz/friendly-snippets",
 			},
@@ -152,9 +189,9 @@ require("lazy").setup({
 				"lewis6991/gitsigns.nvim",
 			},
 		},
-		{
-			"f-person/git-blame.nvim",
-		},
+		-- {
+		-- 	"f-person/git-blame.nvim",
+		-- },
 		{
 			"nvim-lualine/lualine.nvim",
 		},

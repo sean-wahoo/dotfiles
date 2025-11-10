@@ -28,7 +28,6 @@ noice.setup({
 	cmdline = {
 		enabled = true,
 		inc_rename = false,
-		-- view = "cmdline"
 	},
 	lsp = {
 		override = {
@@ -60,4 +59,13 @@ noice.setup({
 	notify = {
 		enabled = true,
 	},
+})
+
+local notify_ok, notify = pcall(require, "notify")
+if not notify_ok then
+	print("notify oopsie!")
+	return
+end
+notify.setup({
+	background_colour = "#000000",
 })

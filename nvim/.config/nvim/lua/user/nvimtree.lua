@@ -9,6 +9,8 @@ vim.g.loaded_netrwPlugin = 1
 
 vim.opt.termguicolors = true
 
+local keymap = vim.keymap.set
+
 local on_attach = function(bufnr)
 	local api = require("nvim-tree.api")
 	local function opts(desc)
@@ -16,6 +18,8 @@ local on_attach = function(bufnr)
 	end
 
 	api.config.mappings.default_on_attach(bufnr)
+
+	keymap("n", "?", api.tree.toggle_help, opts("help"))
 
 	-- vim.keymap.set('n', '<leader>e', api.tree.)
 end
@@ -27,5 +31,8 @@ nvimtree.setup({
 	},
 	view = {
 		preserve_window_proportions = true,
+	},
+	filters = {
+		dotfiles = false,
 	},
 })

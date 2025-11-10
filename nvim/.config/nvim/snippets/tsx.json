@@ -1,0 +1,32 @@
+{
+  "react-server-component": {
+    "prefix": "rsc",
+    "description": "react-server-component",
+    "body": [
+      "const ${1:Page} = ${2:React.FC}<{ ${3:children: React.ReactNode} }> = async ({ ${4:children} }) => {",
+      "  return (",
+      "    <>",
+      "      $0",
+      "    </>",
+      "  )",
+      "}",
+      "export default $1"
+    ]
+  },
+  "react-client-component": {
+    "prefix": "rcc",
+    "description": "react-server-component",
+    "body": [
+      "\"use client\"",
+      "",
+      "const ${1:Page} = ${2:React.FC}<{ ${3:children: React.ReactNode} }> = ({ ${4:children} }) => {",
+      "  return (",
+      "    <>",
+      "      $0",
+      "    </>",
+      "  )",
+      "}",
+      "export default $1"
+    ]
+  }
+}
