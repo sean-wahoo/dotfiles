@@ -1,4 +1,0 @@
-# bindsym $mod+Enter qvm-run personal "alacritty"
-bindsym $mod+Shift+Return dotfiles/i3/sync_dots.sh
-
-gaps inner 12
