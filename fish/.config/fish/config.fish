@@ -6,6 +6,7 @@ if status is-interactive
   set -gx EDITOR "/usr/bin/nvim"
   set -gx STARSHIP_CONFIG "/home/sean/.config/starship/starship.toml"
   set -gx NVIM_MINUET_API_KEY "sk-c175f1176e1f40b284a44b2ac273595e"
+  set -gx HOSTNAME (hostnamectl hostname)
 
   starship init fish | source
   if test -f /usr/bin/direnv
