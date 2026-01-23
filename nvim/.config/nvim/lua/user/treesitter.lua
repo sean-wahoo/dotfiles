@@ -31,6 +31,7 @@ require("nvim-treesitter").install({
 	"yaml",
 	"bash",
 	"prisma",
+	"yuck",
 })
 
 require("nvim-ts-autotag").setup({

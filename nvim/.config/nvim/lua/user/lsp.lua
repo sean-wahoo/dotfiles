@@ -16,21 +16,21 @@ else
 	})
 end
 
-local lspsaga_ok, lspsaga = pcall(require, "lspsaga")
-if not lspsaga_ok then
-	print("lspsaga failed to load")
-else
-	lspsaga.setup({
-		lightbulb = {
-			enable = false,
-		},
-		definition = {
-			keys = {
-				edit = "o",
-			},
-		},
-	})
-end
+-- local lspsaga_ok, lspsaga = pcall(require, "lspsaga")
+-- if not lspsaga_ok then
+-- 	print("lspsaga failed to load")
+-- else
+-- 	lspsaga.setup({
+-- 		lightbulb = {
+-- 			enable = false,
+-- 		},
+-- 		definition = {
+-- 			keys = {
+-- 				edit = "o",
+-- 			},
+-- 		},
+-- 	})
+-- end
 
 local function toggle_diagnostics()
 	local bufnr = vim.api.nvim_get_current_buf()
@@ -87,14 +87,14 @@ local function lsp_keymaps(bufnr)
 		keymap = km_utils.buf_keymap
 	end
 	keymap(bufnr, "n", "<leader>ldc", "<cmd>lua vim.lsp.buf.declaration()<CR>", "goto declaration", opts)
-	keymap(bufnr, "n", "<leader>ldf", "<cmd>Lspsaga goto_definition<CR>", "goto definition", opts)
-	keymap(bufnr, "n", "<leader>lD", "<cmd>Lspsaga peek_definition<CR>", "goto definition", opts)
+	keymap(bufnr, "n", "<leader>ldf", "<cmd>lua vim.lsp.buf.definition()<CR>", "goto definition", opts)
+	-- keymap(bufnr, "n", "<leader>lD", "<cmd>Lspsaga peek_definition<CR>", "goto definition", opts)
 	keymap(bufnr, "n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<CR>", "signature help", opts)
-	keymap(bufnr, "n", "<leader>la", "<cmd>Lspsaga code_action()<CR>", "code action", opts)
-	keymap(bufnr, "n", "K", "<cmd>Lspsaga hover_doc<CR>", "hover", opts)
+	keymap(bufnr, "n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", "code action", opts)
+	keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", "hover", opts)
 	-- keymap(bufnr, "n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", "goto implementation", opts)
-	keymap(bufnr, "n", "<leader>lr", "<cmd>Lspsaga rename<CR>", "rename", opts)
-	keymap(bufnr, "n", "<leader>ll", "<cmd>Lspsaga show_line_diagnostics<CR>", "open float", opts)
+	keymap(bufnr, "n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", "rename", opts)
+	-- keymap(bufnr, "n", "<leader>ll", "<cmd>Lspsaga show_line_diagnostics<CR>", "open float", opts)
 	keymap(bufnr, "n", "<leader>lT", toggle_diagnostics, "toggle diagnostics", opts)
 	if trouble_ok then
 		keymap(bufnr, "n", "<leader>lt", function()

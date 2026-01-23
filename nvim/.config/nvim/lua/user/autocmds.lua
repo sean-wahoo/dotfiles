@@ -59,7 +59,7 @@ local definitions = {
 	{
 		"FileType",
 		{
-			pattern = { "lua", "typescriptreact", "scss", "prisma", "yaml", "json" },
+			pattern = { "lua", "typescriptreact", "scss", "prisma", "yaml", "json", "yuck", "bash" },
 			callback = function()
 				vim.treesitter.start()
 			end,
