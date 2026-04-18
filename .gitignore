@@ -2,3 +2,4 @@ dwm.bak*
 Session.vim
 *lock.json
 *.log
+mpd/.config/mpd/log
