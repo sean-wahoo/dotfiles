@@ -3,10 +3,12 @@ if status is-interactive
     exec startx -- -keeptty
   end
 
+  set -gx XDG_CONFIG_DIR "$HOME/.config"
   set -gx EDITOR "/usr/bin/nvim"
   set -gx STARSHIP_CONFIG "/home/sean/.config/starship/starship.toml"
   set -gx NVIM_MINUET_API_KEY "sk-c175f1176e1f40b284a44b2ac273595e"
   set -gx HOSTNAME (hostnamectl hostname)
+  set -gx MPD_HOST "$XDG_RUNTIME_DIR/mpd/socket"
 
   starship init fish | source
   if test -f /usr/bin/direnv
@@ -16,7 +18,18 @@ if status is-interactive
   if test -f /usr/bin/eza
     alias ls="eza -1lao --git --smart-group --group-directories-first --icons"
   end
+  function y
+    set tmp (mktemp -t "yazi-cwd.XXXXXX")
+    command yazi $argv --cwd-file="$tmp"
+    if read -z cwd < "$tmp"; and [ "$cwd" != "$PWD" ]; and test -d "$cwd"
+      builtin cd -- "$cwd"
+    end
+    rm -f -- "$tmp"
+  end
+end
 
+function fish_greeting
+  /bin/bash ~/.config/fish/scripts/greeting.sh
 end
 
 # pnpm
@@ -25,3 +38,6 @@ if not string match -q -- $PNPM_HOME $PATH
   set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
+
+# opencode
+fish_add_path /home/sean/.opencode/bin
