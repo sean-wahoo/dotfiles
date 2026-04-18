@@ -1,0 +1,34 @@
+
+
+# Base Colors (Kanagawa Wave)
+set color1 = #1F1F28   # sumiInk1 - background
+set color2 = #DCD7BA   # fujiWhite - default foreground
+set color3 = #727169   # fujiGray - comments / muted text
+set color4 = #7E9CD8   # crystalBlue - titles, functions
+set color5 = #98BB6C   # springGreen - strings
+set color6 = #E6C384   # carpYellow - identifiers
+set color7 = #E46876   # waveRed - errors, highlights
+set color8 = #2D4F67   # waveBlue2 - selection background
+
+# Interface
+set header_window_color = ${color4}
+set header_window_highlight_color = ${color2}
+set main_window_color = ${color2}
+set color_window_border_lines_color = ${color3}
+set main_window_highlight_color = ${color6}
+set main_window_highlight_background_color = ${color1}
+set volume_color = ${color5}
+set state_line_color = ${color4}
+set state_flags_color = ${color7}
+set separator_color = ${color3}
+set progress_bar_color = ${color6}
+set progress_bar_background_color = ${color1}
+set alternative_ui_colors = yes
+set browser_playlist_prefix_color = ${color3}
+set now_playing_prefix_color = ${color7}
+set now_playing_suffix_color = ${color7}
+set now_playing_song_color = ${color5}
+set now_playing_song_highlight_color = ${color2}
+set now_playing_song_background_color = ${color8}
+set visualizer_color = ${color5}   # ~/.config/ncmpcpp/config
+

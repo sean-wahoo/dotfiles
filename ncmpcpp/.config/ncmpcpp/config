@@ -14,6 +14,7 @@
 #
 ncmpcpp_directory = ~/.config/ncmpcpp
 #
+#
 ##
 ## Directory for storing downloaded lyrics. It defaults to ~/.lyrics since other
 ## MPD clients (eg. ncmpc) also use that location.
@@ -23,7 +24,8 @@ ncmpcpp_directory = ~/.config/ncmpcpp
 #
 ##### connection settings #####
 #
-mpd_host = localhost
+# mpd_host = localhost
+mpd_host = "$XDG_RUNTIME_DIR/mpd/socket"
 #
 mpd_port = 6600
 #
@@ -33,7 +35,7 @@ mpd_port = 6600
 #
 ## Needed for tag editor and file operations to work.
 ##
-mpd_music_dir = ~/music
+# mpd_music_dir = ~/Music
 #
 #mpd_crossfade_time = 5
 #
@@ -62,16 +64,21 @@ mpd_music_dir = ~/music
 ## Note: If you're using Mopidy, an address of a udpsink gstreamer's output is
 ## also accepted. For example, the following section in mopidy.conf:
 ##
-## [audio]
-## output = tee name=t ! queue ! autoaudiosink t.
-##        ! queue ! audio/x-raw,rate=44100,channels=2,format=S16LE
-##        ! udpsink host=localhost port=5555
+# [audio]
+# output = tee name=t ! queue ! autoaudiosink t.
+#        ! queue ! audio/x-raw,rate=44100,channels=2,format=S16LE
+#        ! udpsink host=localhost port=5555
 ##
 ## will make localhost:5555 available as a source of data for the stereo
 ## visualizer.
 ##
 #
-#visualizer_data_source = /tmp/mpd.fifo
+# visualizer_data_source = "localhost:5555"
+visualizer_data_source = "/tmp/mpd.fifo"
+visualizer_output_name = "my_fifo"
+visualizer_in_stereo = "yes"
+visualizer_type = "spectrum"
+visualizer_look = "+|"
 #
 ##
 ## Note: Below parameter is needed for ncmpcpp to determine which output
@@ -391,13 +398,13 @@ execute_on_song_change = songinfo
 #
 ## Available values: classic, alternative.
 ##
-#user_interface = classic
+user_interface = alternative
 #
 #data_fetching_delay = yes
 #
 ## Available values: artist, album_artist, date, genre, composer, performer.
 ##
-#media_library_primary_tag = artist
+media_library_primary_tag = album_artist
 #
 #media_library_albums_split_by_date = yes
 #
@@ -422,11 +429,12 @@ execute_on_song_change = songinfo
 #
 #cyclic_scrolling = no
 #
-#lyrics_fetchers = tags, genius, tekstowo, plyrics, justsomelyrics, jahlyrics, zeneszoveg, internet
+lyrics_fetchers = tags, genius, tekstowo, plyrics, justsomelyrics, jahlyrics, zeneszoveg, internet
+# lyrics_fetchers = azlyrics, genius, musixmatch
 #
-#follow_now_playing_lyrics = no
+follow_now_playing_lyrics = yes
 #
-#fetch_lyrics_for_current_song_in_background = no
+fetch_lyrics_for_current_song_in_background = yes
 #
 #store_lyrics_in_song_dir = no
 #
@@ -462,7 +470,7 @@ execute_on_song_change = songinfo
 ##
 ## Note: You can define startup screen by choosing screen from the list above.
 ##
-#startup_screen = playlist
+startup_screen = lyrics
 #
 ##
 ## Note: You can define startup slave screen by choosing screen from the list
@@ -627,3 +635,38 @@ execute_on_song_change = songinfo
 #
 #active_window_border = red
 #
+#
+
+# Base Colors (Kanagawa Wave)
+set color1 = #1F1F28   # sumiInk1 - background
+set color2 = #DCD7BA   # fujiWhite - default foreground
+set color3 = #727169   # fujiGray - comments / muted text
+set color4 = #7E9CD8   # crystalBlue - titles, functions
+set color5 = #98BB6C   # springGreen - strings
+set color6 = #E6C384   # carpYellow - identifiers
+set color7 = #E46876   # waveRed - errors, highlights
+set color8 = #2D4F67   # waveBlue2 - selection background
+
+# Interface
+set header_window_color = ${color4}
+set header_window_highlight_color = ${color2}
+set main_window_color = ${color2}
+set color_window_border_lines_color = ${color3}
+set main_window_highlight_color = ${color6}
+set main_window_highlight_background_color = ${color1}
+set volume_color = ${color5}
+set state_line_color = ${color4}
+set state_flags_color = ${color7}
+set separator_color = ${color3}
+set progress_bar_color = ${color6}
+set progress_bar_background_color = ${color1}
+set alternative_ui_colors = yes
+set browser_playlist_prefix_color = ${color3}
+set now_playing_prefix_color = ${color7}
+set now_playing_suffix_color = ${color7}
+set now_playing_song_color = ${color5}
+set now_playing_song_highlight_color = ${color2}
+set now_playing_song_background_color = ${color8}
+set visualizer_color = ${color5}   # ~/.config/ncmpcpp/config
+# include = ~/.config/ncmpcpp/kanagawa.theme
+# lyrics_fetchers = genius, azlyrics, lyricwiki   
