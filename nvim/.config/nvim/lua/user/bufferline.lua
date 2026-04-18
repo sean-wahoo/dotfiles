@@ -8,8 +8,8 @@ bufferline.setup({
 	options = {
 		offsets = {
 			{
-				filetype = "NvimTree",
-				text = "explorer",
+				filetype = "snacks_layout_box",
+				text = "",
 				highlight = "Directory",
 				separator = true,
 			},
