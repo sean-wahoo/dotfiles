@@ -1,0 +1,18 @@
+(defwidget wrapper-widget [name]
+  (box
+    :orientation "vertical"
+    :class "widget-box"
+    (box
+      :class "header-box"
+      :height 24
+      :space-evenly false
+      (label 
+        :class "header-text"
+        :valign "start"
+        :halign "start"
+        :text name
+      )
+    )
+    (children)
+  )
+)

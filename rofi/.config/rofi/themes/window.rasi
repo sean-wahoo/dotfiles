@@ -1,0 +1,15 @@
+@import "config"
+
+* {
+  accent-color: @blue;
+}
+
+configuration {
+  modes: [window, windowcd];
+}
+window {
+  height: 480px;
+  width: 640px;
+  border: 2px;
+  border-color: @accent-color;
+}

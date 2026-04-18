@@ -4,67 +4,88 @@ $fg1: #d3c6aa;
 $fg2: $greenblue;
 $dim-fg2: #3f5865;
 
+$green: #a7c080;
+$fg3: $green;
+
 $border1: $fg1;
 $border2: $fg2;
 $weather_bg: $bg1;
 
 * {
-  // all: unset;
-  font-family: "IosevkaNerdFontMono";
+  // font-family: "IosevkaNerdFontMono";
+  font-family: "DepartureMonoNerdFontMono";
 }
 
 window {
   border: none;
-  border: 12px double;
+  border: 8px double;
+  font-size: 16px;
+  background-color: $bg1;
+
+  .header-box {
+    .header-text {
+      margin: 1.6rem 2rem;
+      font-size: 1.6rem;
+      font-style: italic;
+      text-decoration: underline;
+    }
+  }
+
+  // &.wrapper {
+  //   label {
+  //     margin: 1rem;
+  //     // .header-text {
+  //     //   margin-top: 0px;
+  //     // }
+  //   }
+  // }
 
   &.weather {
     border-color: $border1;
     background-color: $weather_bg;
     color: $fg1;
-    font-size: 24px;
 
-    .weather-icon {
-      padding: 0 36px 0 8px;
+    .time-date-box {
+      min-width: 324px;
     }
 
     .time {
-      font-size: 42px;
+      font-size: 2.4em;
       font-weight: bold;
     }
     .date {
-      font-size: 36px;
+      font-size: 1.4em;
     }
-
     .temp {
       font-weight: bold;
-      font-size: 36px;
+      font-size: 1.8em;
     }
-  };
-
-  &.calendar {
-    font-size: 28px;
+  }
+  &.news {
+    font-size: 1em;
+    color: $fg2;
     border-color: $border2;
-    background-color: $bg1;
 
-    calendar {
-      padding: 12px;
-      color: $fg2;
-      background-color: inherit;
-      border: none;
-      
-      &:indeterminate {
-        color: $dim-fg2;
-      }
-      &.header {
-        border: none;
-        border-bottom: 1px solid $greenblue;
-      }
+    .news-box {
+      padding: 1.2em 2.4em;
+    }
+    .news-item-title {
+      margin: 1.2em 0;
+    }
+  }
+  &.player {
+    font-size: 1em;
+    color: $green;
 
-      &:selected {
-        color: $bg1;
-        background-color: $greenblue
+    .position {
+      font-size: 0.8em;
+    }
+    .buttons {
+      font-size: 1.2em;
+
+      *:nth-child(even) {
+        font-size: 1.6em;
       }
     }
-
   }
 }

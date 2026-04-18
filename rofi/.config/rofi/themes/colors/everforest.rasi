@@ -1,0 +1,129 @@
+/* ROFI SQUARED THEME USING THE EVERFOREST PALETTE  */
+/* Author: Newman Sanchez (https://github.com/newmanls) */
+
+
+
+* {
+    /* Base Colors from Kanagawa */
+    // bg0:   #1F1F28;
+    // bg1:   #2B2B38;
+    // bg2:   #363646;
+    // bg3:   #424252;
+    // fg0:   #DCD7BA;
+    // fg1:   #C8C093;
+    // fg2:   #727169;
+
+    /* Semantic Mappings */
+    // background:  @bg0;
+    // background-alt: @bg1;
+    // foreground:  @fg0;
+    // comment:     @fg2;
+    // selection:   #957FB8; /* Oni Violet */
+    // highlight:   #98BB6C; /* Spring Green */
+    //
+    // /* Accent Color */
+    // accent:      #98BB6C; /* Spring Green */
+
+    /* Additional Palette */
+    red:         #E46876;
+    green:       #A7C080;
+    orange:      #E69875;
+    yellow:      #E6C384;
+    blue:        #7E9CD8;
+    magenta:     #9D85C2;
+    cyan:        #76A89A;
+
+    barHeight: 24px;
+
+    font:   "DepartureMono Nerd Font 12";
+
+    bg0:     #2B3339;
+    bg1:     #323D43;
+    fg0:     #D3C6AA;
+
+    // accent-color:     @green;
+    urgent-color:     #DBBC7F;
+
+    background-color:   transparent;
+    text-color:         @fg0;
+
+    margin:     0;
+    padding:    0;
+    spacing:    0;
+}
+
+window {
+    location:   center;
+    width:      480;
+
+    background-color:   @bg0;
+}
+
+inputbar {
+    spacing:    8px;
+    padding:    8px;
+
+    background-color:   @bg1;
+}
+
+prompt, entry, element-icon, element-text {
+    vertical-align: 0.5;
+}
+
+prompt {
+    text-color: @accent-color;
+}
+
+textbox {
+    padding:            8px;
+    background-color:   @bg1;
+}
+
+listview {
+    padding:    4px 0;
+    lines:      8;
+    columns:    1;
+
+    fixed-height:   false;
+}
+
+element {
+    padding:    8px;
+    spacing:    8px;
+}
+
+element normal normal {
+    text-color: @fg0;
+}
+
+element normal urgent {
+    text-color: @urgent-color;
+}
+
+element normal active {
+    text-color: @accent-color;
+}
+
+element alternate active {
+    text-color: @accent-color;
+}
+
+element selected {
+    text-color: @bg0;
+}
+
+element selected normal, element selected active {
+    background-color:   @accent-color;
+}
+
+element selected urgent {
+    background-color:   @urgent-color;
+}
+
+element-icon {
+    size:   0.8em;
+}
+
+element-text {
+    text-color: inherit;
+}

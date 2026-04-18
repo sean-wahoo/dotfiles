@@ -1,0 +1,15 @@
+// vim:ft=rasi
+* {
+  barHeight: 24px;
+}
+
+configuration {
+  modes: [combi, drun, run];
+  combi-modes: [window, drun, run];
+}
+window {
+  fixed-height: true;
+  show-icons: true;
+}
+
+@theme "colors/everforest.rasi"

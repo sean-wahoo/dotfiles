@@ -1,0 +1,11 @@
+@import "config"
+
+* {
+  accent-color: @orange;
+}
+
+window {
+  width: 600px;
+  border: 2px;
+  border-color: @accent-color;
+}
