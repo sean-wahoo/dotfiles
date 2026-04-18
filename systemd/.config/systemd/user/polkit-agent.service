@@ -1,0 +1,12 @@
+[Unit]
+Description=Polkit Agent
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=%h/.config/systemd/user/scripts/polkit.sh
+Restart=on-failure
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=default.target   

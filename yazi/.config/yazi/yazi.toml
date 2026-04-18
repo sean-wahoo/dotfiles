@@ -1,0 +1,13 @@
+[mgr]
+ratio = [2, 4, 2]
+sort_dir_first = true
+show_hidden = true
+show_symlink = true
+
+[preview]
+wrap = "no"
+
+[opener]
+edit = [
+	{ run = "${EDITOR:-nvim} %s", desc = "$EDITOR",      for = "unix", block = true },
+]

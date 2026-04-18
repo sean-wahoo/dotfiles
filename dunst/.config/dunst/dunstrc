@@ -1,0 +1,40 @@
+# vim.ft=dosini
+[urgency_low]
+    background = "#1F1F28"
+    foreground = "#DCD7BA"
+    timeout = 5
+
+[urgency_normal]
+    background = "#1F1F28"
+    foreground = "#DCD7BA"
+    timeout = 10
+
+[urgency_critical]
+    background = "#1F1F28"
+    foreground = "#E82424"  ; samuraiRed
+    timeout = 0
+    frame_color = "#E82424"
+
+# Global settings
+[global]
+    # font = Iosevka Nerd Font Mono
+    font = "DepartureMono Nerd Font 11"
+    frame_width = 2
+    separator_height = 2
+    padding = 10
+    horizontal_padding = 10
+    alignment = left
+    width = 300
+    height = (100, 200)  
+    follow = mouse
+    origin = bottom-right
+    offset = 48x48
+
+[change-volume]
+  stack-tag = "change-volume"
+  icon = ""
+  alignment = center
+
+[songinfo]
+  stack-tag = "songinfo"
+  max_icon_size = 128

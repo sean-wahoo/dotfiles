@@ -1,0 +1,12 @@
+[Unit]
+Description=Glances
+After=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=glances -w
+Restart=on-failure
+Environment=DISPLAY=:0
+
+[Install]
+WantedBy=default.target   
