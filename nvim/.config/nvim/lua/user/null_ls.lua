@@ -13,12 +13,9 @@ null_ls.setup({
 		}),
 		null_ls.builtins.formatting.yamlfmt,
 
-		null_ls.builtins.completion.luasnip,
-		null_ls.builtins.completion.nvim_snippets,
+		null_ls.builtins.formatting.clang_format,
 
-		-- null_ls.builtins.diagnostics.stylelint,
 		null_ls.builtins.diagnostics.yamllint,
-		-- null_ls.builtins.formatting.rustfmt,
 	},
 	on_attach = function(client, bufnr)
 		if client.supports_method("textDocument/formatting") then
