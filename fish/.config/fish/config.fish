@@ -9,6 +9,7 @@ if status is-interactive
   set -gx NVIM_MINUET_API_KEY "sk-c175f1176e1f40b284a44b2ac273595e"
   set -gx HOSTNAME (hostnamectl hostname)
   set -gx MPD_HOST "$XDG_RUNTIME_DIR/mpd/socket"
+  set -gx ANDROID_HOME "$HOME/Android/Sdk"
 
   starship init fish | source
   if test -f /usr/bin/direnv
