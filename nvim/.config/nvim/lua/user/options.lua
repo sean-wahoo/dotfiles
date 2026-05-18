@@ -34,7 +34,8 @@ local options = {
   statuscolumn = "",
   laststatus = 3,
   splitkeep = 'screen',
-  winborder = 'single'
+  winborder = 'single',
+  formatexpr = "v:lua.require'conform'.formatexpr()"
 }
 
 for k, v in pairs(options) do
