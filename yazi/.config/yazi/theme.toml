@@ -1,0 +1,9 @@
+[flavor]
+dark = "everforest-medium"
+
+[tabs]
+sep_outer = { open = "▐", close = "▌" }
+sep_inner = { close = "▐", open = "▌" }
+
+[indicator]
+padding = { open = "▐", close = "▌" }

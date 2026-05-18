@@ -3,6 +3,7 @@ ratio = [2, 4, 2]
 sort_dir_first = true
 show_hidden = true
 show_symlink = true
+border_symbol = "|"
 
 [preview]
 wrap = "no"
