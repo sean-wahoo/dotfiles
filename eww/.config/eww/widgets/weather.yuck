@@ -16,64 +16,58 @@
   :interval "1s"
   :initial: "hehe"
   :run-while true
-`date +"%A, %B%e"`)
+`date +"%A, %B\ %e"`)
 
 (defwindow weather
-  :monitor '["eDP-1", "DP-4-1"]'
+  :monitor '["<primary>", 0]'
+  :hexpand true
   :geometry (geometry
     :x "24px"
     :y "48px"
-    :width "760px"
-    :height "260px"
+    :height "200px"
     :anchor "top left"
   )
   :stacking "bg"
-  :windowtype "desktop"
+  :windowtype "dock"
   :wm-ignore true
 (weather-widget))
 
 
 (defwidget weather-widget []
   (box
-    :halign 'center'
     :valign 'center'
-    :space-evenly true
-    :orientation 'horizontal'
+    :spacing 24
+    :orientation 'h'
     (box
-      :orientation "vertical"
-      :valign "center"
-
+      :orientation "v"
+      :class "time-date-box"
       (label
         :class "time"
         :text "${time}"
-        :xalign 0
+        :xalign 1
       )
       (label
+        :xalign 1
         :class "date"
         :text "${date}"
-        :xalign 0
       )
     )
-    ;(image
-    ;  :class 'weather-icon'
-    ;  :path "/home/sean/.config/eww/icons/_weather_${weather_icon}.png"
-    ;)
     (centerbox
       :orientation "vertical"
       (label
         :class "temp"
         :text "${weather-json?.main?.temp}°F"
-        :xalign 1
+        :xalign 0
       )
       (label
         :class "feels_like"
         :text 'feels like ${weather-json?.main?.feels_like}°F'
-        :xalign 1
+        :xalign 0
       )
       (label
         :class "condition"
         :text '${weather-json?.weather?.[0]?.description}'
-        :xalign 1
+        :xalign 0
       )
     )
   )

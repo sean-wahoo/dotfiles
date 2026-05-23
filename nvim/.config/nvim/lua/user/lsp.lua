@@ -4,6 +4,7 @@ local lsp_servers = {}
 
 for file in files do
 	local lsp_name = string.gmatch(file, "([^.]+)")()
+	lsp_name = lsp_name == "lua-language-server" and "lua_ls" or lsp_name
 	table.insert(lsp_servers, lsp_name)
 end
 
@@ -12,25 +13,19 @@ if not m_ok then
 	print("mason failed")
 else
 	mason.setup({
-		ensure_installed = { "lua-language-server", "typescript-language-server", "bash-language-server" },
+		registries = {
+			"github:mason-org/mason-registry",
+			"github:Crashdummyy/mason-registry",
+		},
+		ensure_installed = {
+			"lua-language-server",
+			"vtsls",
+			"bash-language-server",
+			"rustfmt",
+			"rust-analyzer",
+		},
 	})
 end
-
--- local lspsaga_ok, lspsaga = pcall(require, "lspsaga")
--- if not lspsaga_ok then
--- 	print("lspsaga failed to load")
--- else
--- 	lspsaga.setup({
--- 		lightbulb = {
--- 			enable = false,
--- 		},
--- 		definition = {
--- 			keys = {
--- 				edit = "o",
--- 			},
--- 		},
--- 	})
--- end
 
 local function toggle_diagnostics()
 	local bufnr = vim.api.nvim_get_current_buf()
@@ -40,6 +35,7 @@ local function toggle_diagnostics()
 end
 
 local diagnostic_config = {
+	float = { border = "rounded" },
 	signs = {
 		text = {
 			[vim.diagnostic.severity.ERROR] = "",
@@ -56,7 +52,7 @@ if not tid_ok then
 else
 	tid.setup({
 		preset = "powerline",
-		-- transparent_bg = true,
+		transparent_bg = true,
 		hi = {
 			mixing_color = "#272e33",
 		},
@@ -80,33 +76,32 @@ end
 local trouble_ok, trouble = pcall(require, "trouble")
 
 local function lsp_keymaps(bufnr)
-	local opts = { noremap = true, silent = true }
-	local keymap = vim.api.nvim_buf_set_keymap
+	local opts = { noremap = true, silent = true, bufnr = bufnr }
+	local keymap = vim.keymap.set
 	local km_utils_ok, km_utils = pcall(require, "user.keymaps")
 	if km_utils_ok then
-		keymap = km_utils.buf_keymap
+		keymap = km_utils.keymap
 	end
-	keymap(bufnr, "n", "<leader>ldc", "<cmd>lua vim.lsp.buf.declaration()<CR>", "goto declaration", opts)
-	keymap(bufnr, "n", "<leader>ldf", "<cmd>lua vim.lsp.buf.definition()<CR>", "goto definition", opts)
-	-- keymap(bufnr, "n", "<leader>lD", "<cmd>Lspsaga peek_definition<CR>", "goto definition", opts)
-	keymap(bufnr, "n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<CR>", "signature help", opts)
-	keymap(bufnr, "n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", "code action", opts)
-	keymap(bufnr, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", "hover", opts)
-	-- keymap(bufnr, "n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", "goto implementation", opts)
-	keymap(bufnr, "n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", "rename", opts)
-	-- keymap(bufnr, "n", "<leader>ll", "<cmd>Lspsaga show_line_diagnostics<CR>", "open float", opts)
-	keymap(bufnr, "n", "<leader>lT", toggle_diagnostics, "toggle diagnostics", opts)
+	keymap("n", "<leader>ldc", "<cmd>lua vim.lsp.buf.declaration()<CR>", "goto declaration", opts)
+	keymap("n", "<leader>ldf", "<cmd>lua vim.lsp.buf.definition()<CR>", "goto definition", opts)
+	keymap("n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<CR>", "signature help", opts)
+	keymap("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", "code action", opts)
+	keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", "hover", opts)
+	keymap("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", "goto implementation", opts)
+	keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", "rename", opts)
+	keymap("n", "<leader>ll", "<cmd>lua vim.diagnostic.open_float()<CR>", "open float", opts)
+	keymap("n", "<leader>lT", toggle_diagnostics, "toggle diagnostics", opts)
 	if trouble_ok then
-		keymap(bufnr, "n", "<leader>lt", function()
+		keymap("n", "<leader>lt", function()
 			trouble.toggle("diagnostics")
 		end, "trouble", opts)
 	end
 	if tid_ok then
-		keymap(bufnr, "n", "<leader>li", function()
+		keymap("n", "<leader>lI", function()
 			local cursor_diag = tid.get_diagnostic_under_cursor()
 			cursor_diag.toggle()
 		end, "toggle inline diagnostics (cursor)", opts)
-		keymap(bufnr, "n", "<leader>li", function()
+		keymap("n", "<leader>lI", function()
 			tid.toggle()
 		end, "toggle inline diagnostics (global)", opts)
 	end
@@ -134,11 +129,31 @@ local function common_capabilities()
 	return capabilities
 end
 
+local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+
 local on_attach = function(client, bufnr)
 	lsp_keymaps(bufnr)
 	local wd_ok, wd = pcall(require, "workspace-diagnostics")
+
 	if wd_ok then
-		wd.populate_workspace_diagnostics(client, bufnr)
+		local wd_success, _ = pcall(function()
+			wd.populate_workspace_diagnostics(client, bufnr)
+		end)
+		if not wd_success then
+			print("workspace diagnostics fail!")
+		end
+	end
+	if client.supports_method("textDocument/formatting") then
+		vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			group = augroup,
+			buffer = bufnr,
+			callback = function(args)
+				vim.lsp.buf.format({
+					bufnr = args.buf,
+				})
+			end,
+		})
 	end
 end
 vim.diagnostic.config(diagnostic_config)
@@ -148,3 +163,38 @@ vim.lsp.config("*", {
 	on_attach = on_attach,
 })
 vim.lsp.enable(lsp_servers)
+
+require("user.null_ls")
+
+local tstools_ok, tstools = pcall(require, "typescript-tools")
+if not tstools_ok then
+	print("tstools oopsie!")
+else
+	tstools.setup({
+		on_attach = function(client, bufnr)
+			client.server_capabilities.documentFormattingProvider = false
+			client.server_capabilities.documentRangeFormattingProvider = false
+
+			if vim.bo[bufnr].filetype == "eta" then
+				vim.diagnostic.enable(false, { bufnr = bufnr })
+				client.handlers["textDocument/publishDiagnostics"] = function() end
+			end
+		end,
+		filetypes = {
+			"typescript",
+			"javascript",
+			"typescriptreact",
+			"javascriptreact",
+			"ejs",
+			"eta",
+		},
+		settings = {
+			expose_as_code_action = { "remove_unused_imports", "add_missing_imports" },
+			publish_diagnostic_on = "change",
+			code_lens = "off",
+			jsx_close_tag = { enable = true },
+			-- tsserver_path
+			cmd = { "tsgo", "--lsp", "--stdio" },
+		},
+	})
+end

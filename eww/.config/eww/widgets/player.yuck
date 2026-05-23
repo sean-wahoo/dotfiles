@@ -1,0 +1,89 @@
+(defvar playing false)
+
+(defpoll title
+  :interval "1s"
+  :initial ""
+  :run-while playing
+'~/.config/eww/scripts/player.sh get_title')
+
+(defpoll artist
+  :interval "1s"
+  :initial ""
+  :run-while playing
+'~/.config/eww/scripts/player.sh get_artist')
+
+(defpoll position
+  :interval "1s"
+  :initial ""
+  :run-while playing
+'~/.config/eww/scripts/player.sh get_position')
+
+(defpoll length
+  :interval "1s"
+  :initial ""
+  :run-while playing
+'~/.config/eww/scripts/player.sh get_length')
+
+(defpoll status
+  :interval "0.1s"
+  :initial ""
+  :run-while playing
+'~/.config/eww/scripts/player.sh get_status')
+
+(defwidget player-widget []
+  (box
+    :orientation "v"
+    :space-evenly false
+    :valign "center"
+    (label
+      :class 'title'
+      :text "${title}"
+    )
+    (label
+      :class 'artist'
+      :text "${artist}"
+    )
+    (label
+      :class 'position'
+      :text "${position} / ${length}"
+    )
+    (box
+      :spacing 10
+      :halign 'center'
+      :class 'buttons'
+      (eventbox
+        :onclick '~/.config/eww/scripts/player.sh prev'
+        "󰒮"
+      )
+      (eventbox
+        :onclick '~/.config/eww/scripts/player.sh seek_back'
+        "󰴪"
+      )
+      (eventbox
+        :onclick '~/.config/eww/scripts/player.sh toggle'
+        "${status == 'Playing' ? '󰏤' : '󰐊'}"
+      )
+      (eventbox
+        :onclick '~/.config/eww/scripts/player.sh seek_forward'
+        "󰵱"
+      )
+      (eventbox
+        :onclick '~/.config/eww/scripts/player.sh next'
+        "󰒭"
+      )
+    )
+  )
+)
+
+(defwindow player
+  :monitor '["<primary>", 0]'
+  :geometry (geometry
+    :y "48px"
+    :height "124px"
+    :width "30%"
+    :anchor "top center"
+  )
+  :windowtype "dock"
+  :stacking "bg"
+  :wm-ignore true
+(player-widget))

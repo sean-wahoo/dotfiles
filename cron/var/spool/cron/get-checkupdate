@@ -1,0 +1,1 @@
+*/15 * * * * checkupdates | wc -l > /tmp/get-checkupdate

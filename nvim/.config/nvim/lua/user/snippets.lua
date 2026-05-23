@@ -32,12 +32,14 @@ local conds = require("luasnip.extras.conditions")
 local conds_expand = require("luasnip.extras.conditions.expand")
 
 local function copy(args)
-	print(args[1])
 	return args[1][1]
 end
 
 ls.add_snippets("lua", {
-	s("prq", {
+	s({
+		trig = "prq",
+		desc = "pcall a module",
+	}, {
 		t("local "),
 		i(1, "module"),
 		t("_ok, "),
@@ -109,6 +111,55 @@ ls.add_snippets("typescriptreact", {
 			t(">("),
 			i(4),
 			t(");"),
+		}),
+	}),
+})
+
+-- c(omponent)c(lient)c(hildren)
+-- c(omponent)c(lient)n(o children)
+-- c(omponent)s(server)c(hildren)
+-- c(omponent)s(server)(o children)
+
+ls.add_snippets("typescriptreact", {
+	s({
+		trig = "ccc",
+		desc = "client component with children",
+	}, {
+		t({ '"use client"', "", "" }),
+		sn(1, {
+			t("const "),
+			i(1, "Component"),
+			t({ " = ({ children }: PropsWithChildren) => {", "" }),
+			t({ "\treturn (", "" }),
+			i(2),
+			t({ "\t\t<></>", "" }),
+			t({ "\t)", "" }),
+			t({ "}", "" }),
+			t("export default "),
+			f(copy, 1),
+			t(";"),
+		}),
+	}),
+})
+
+ls.add_snippets("typescriptreact", {
+	s({
+		trig = "ccn",
+		desc = "client component without children",
+	}, {
+		t({ '"use client"', "", "" }),
+		sn(1, {
+			t("const "),
+			i(1, "Component"),
+			t({ " = () => {", "" }),
+			t({ "\treturn (", "" }),
+			i(2),
+			t({ "\t\t<></>", "" }),
+			t({ "\t)", "" }),
+			t({ "}", "" }),
+			t("export default "),
+			f(copy, 1),
+			t(";"),
 		}),
 	}),
 })

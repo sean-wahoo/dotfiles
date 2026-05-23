@@ -1,0 +1,13 @@
+@import "config"
+
+* {
+  accent-color: @green;
+}
+configuration {
+  modes: [drun];
+}
+window {
+  height: 400px;
+  border: 2px;
+  border-color: @accent-color;
+}

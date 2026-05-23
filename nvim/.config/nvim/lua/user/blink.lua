@@ -4,8 +4,6 @@ if not ok then
 	return
 end
 
-local m_ok, minuet = pcall(require, "minuet")
-
 local kind_icons = {
 	-- LLM Provider icons
 	claude = "󰋦",
@@ -54,6 +52,13 @@ local blink_config = {
 	snippets = {
 		preset = "luasnip",
 	},
+	cmdline = {
+		completion = {
+			ghost_text = {
+				enabled = false,
+			},
+		},
+	},
 	fuzzy = {
 		implementation = "prefer_rust_with_warning",
 		sorts = {
@@ -68,7 +73,47 @@ local blink_config = {
 		},
 	},
 	sources = {
-		default = { "lsp", "snippets", "buffer", "path" },
+		default = { "cursortab", "lazydev", "lsp", "buffer", "snippets", "path", "emoji" },
+		providers = {
+			env = {
+				name = "Env",
+				module = "blink-cmp-env",
+				opts = {
+					item_kind = require("blink.cmp.types").CompletionItemKind,
+					show_braces = false,
+					show_documentation_window = true,
+				},
+			},
+			emoji = {
+				module = "blink-emoji",
+				name = "Emoji",
+				score_offset = 15,
+				opts = {
+					insert = true,
+					trigger = function()
+						return { ":" }
+					end,
+					should_show_items = function()
+						return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
+					end,
+				},
+			},
+			cursortab = {
+				module = "cursortab.blink",
+				name = "cursortab",
+				async = true,
+				timeout_ms = 5000,
+			},
+			-- avante = {
+			--   name = "Avante",
+			--   module = "blink-cmp-avante",
+			-- },
+			lazydev = {
+				name = "LazyDev",
+				module = "lazydev.integrations.blink",
+				score_offset = 100,
+			},
+		},
 	},
 	completion = {
 		menu = {
@@ -90,14 +135,11 @@ local blink_config = {
 				},
 			},
 		},
+		documentation = { auto_show = true },
 		trigger = {
 			prefetch_on_insert = false,
 		},
 	},
 }
-
-if m_ok then
-	blink_config.keymap["<A-t>"] = minuet.make_blink_map()
-end
 
 blink.setup(blink_config)

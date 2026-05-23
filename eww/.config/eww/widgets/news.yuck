@@ -1,0 +1,44 @@
+(defpoll news
+  :interval "5min"
+  :initial: "news haha"
+  :run-while true
+  `~/.config/eww/scripts/get_news.sh`
+)
+
+(defvar news_index "0")
+
+(defwidget news-widget []
+  (scroll
+    :vscroll true
+    :hscroll false
+    (box
+      :class "news-box"
+      :orientation "v"
+      (for item in news
+        (eventbox
+          :onclick "xdg-open ${item.link}"
+            (label
+              :text "- ${item.title}"
+              :class "news-item-title"
+              :wrap true
+              :xalign 0
+            )
+        )
+      )
+    )
+  )
+)
+(defwindow news
+  :monitor '["<primary>", 0]'
+  :geometry (geometry
+    :x "24px"
+    :y "274px"
+    :width "446px"
+    :height "420px"
+    :anchor "top left"
+  )
+  :windowtype "dock"
+  :stacking "bg"
+  :wm-ignore true
+  (wrapper-widget :name "news" (news-widget))
+)

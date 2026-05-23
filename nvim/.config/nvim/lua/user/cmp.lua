@@ -61,9 +61,6 @@ cmp.setup({
 				else
 					cmp.select_next_item()
 				end
-			--[[ Replace with your snippet engine (see above sections on this page)
-      elseif snippy.can_expand_or_advance() then
-        snippy.expand_or_advance() ]]
 			elseif has_words_before() then
 				cmp.complete()
 				if #cmp.get_entries() == 1 then
@@ -76,26 +73,25 @@ cmp.setup({
 	}),
 })
 
--- cmp.setup.cmdline({ '/', '?' }, {
---   mapping = cmp.mapping.preset.cmdline({
---     ['<Tab>'] = {
---       c = function(_)
---         if cmp.visible() then
---           if #cmp.get_entries() == 1 then
---             cmp.confirm { select = true }
---           else
---             cmp.select_next_item()
---           end
---         else
---           cmp.complete()
---           if #cmp.get_entries() == 1 then
---             cmp.confirm { select = true }
---           end
---         end
---       end
---     }
---   })
--- })
-
+cmp.setup.cmdline({ "/", "?" }, {
+	mapping = cmp.mapping.preset.cmdline({
+		["<Tab>"] = {
+			c = function(_)
+				if cmp.visible() then
+					if #cmp.get_entries() == 1 then
+						cmp.confirm({ select = true })
+					else
+						cmp.select_next_item()
+					end
+				else
+					cmp.complete()
+					if #cmp.get_entries() == 1 then
+						cmp.confirm({ select = true })
+					end
+				end
+			end,
+		},
+	}),
+})
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())

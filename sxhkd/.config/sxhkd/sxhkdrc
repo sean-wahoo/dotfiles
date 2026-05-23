@@ -1,0 +1,6 @@
+mod4 + p
+  rofi -show drun -theme drun -show-icons
+mod4 + shift + p
+  rofi -show powermenu -theme powermenu -show-icons
+mod4 + w
+  rofi -show window -theme window -show-icons

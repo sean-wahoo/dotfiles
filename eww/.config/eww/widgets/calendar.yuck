@@ -1,5 +1,5 @@
 (defwindow calendar
-  :monitor '["eDP-1", "DP-4-1"]'
+  :monitor '["<primary>", 0]'
   :geometry (geometry
     :x "24px"
     :y "324px"
@@ -8,7 +8,7 @@
     :anchor "top left"
   )
   :stacking "bg"
-  :windowtype "desktop"
+  :windowtype "dock"
   :wm-ignore true
   (calendar-widget)
 )

@@ -1,0 +1,13 @@
+[Unit]
+Description=sxhkd x key daemon
+
+[Service]
+Type=simple
+ExecStart=sxhkd -c %h/.config/sxhkd/sxhkdrc
+Restart=on-failure
+StandardOutput=append:%h/.config/systemd/logs/%N_stdout.log
+StandardError=append:%h/.config/systemd/logs/%N_stderr.log
+LimitFSIZE=10485760
+
+[Install]
+WantedBy=default.target

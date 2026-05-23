@@ -12,8 +12,8 @@ weather_icon=$(echo $weather_api_response | jq '.weather[0].icon')
 weather_icon=${weather_icon//\"/}
 
 
-if [! -f "$HOME/.config/eww/icons/_weather_$weather_icon.png"]; then
-  curl -sf "https://openweathermap.org/img/wn/$weather_icon@4x.png" > "$HOME/.config/eww/icons/_weather_$weather_icon.png"
-fi
+# if [! -f "$HOME/.config/eww/icons/_weather_$weather_icon.png"]; then
+#   curl -sf "https://openweathermap.org/img/wn/$weather_icon@4x.png" > "$HOME/.config/eww/icons/_weather_$weather_icon.png"
+# fi
 
 echo "$weather_api_response"

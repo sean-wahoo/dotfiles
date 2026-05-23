@@ -7,7 +7,9 @@ import = [
 size = 10.0
 
 [font.normal]
-family = "Maple Mono NF CN"
+# family = "Maple Mono NF CN"
+family = "DepartureMonoNerdFontMono"
+# family = "GohuFont14NerdFontMono"
 style = "Regular"
 
 [window]

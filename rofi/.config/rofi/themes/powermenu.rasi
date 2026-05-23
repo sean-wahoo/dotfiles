@@ -1,0 +1,14 @@
+@import "config"
+
+* {
+  accent-color: @red;
+}
+
+window {
+  width: 200px;
+  border: 2px;
+  border-color: @accent-color;
+  icon-theme: "pixelitos-dark";
+  location: north east;
+  margin: 32px 8px;
+}
