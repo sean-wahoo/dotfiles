@@ -27,13 +27,6 @@ else
 	})
 end
 
-local function toggle_diagnostics()
-	local bufnr = vim.api.nvim_get_current_buf()
-
-	local newSet = not vim.diagnostic.is_enabled({ bufnr = bufnr })
-	vim.diagnostic.enable(newSet, { bufnr = bufnr })
-end
-
 local diagnostic_config = {
 	float = { border = "rounded" },
 	signs = {
@@ -75,35 +68,95 @@ else
 end
 local trouble_ok, trouble = pcall(require, "trouble")
 
+local keymap = require("user.keymaps").keymap
 local function lsp_keymaps(bufnr)
-	local opts = { noremap = true, silent = true, bufnr = bufnr }
-	local keymap = vim.keymap.set
-	local km_utils_ok, km_utils = pcall(require, "user.keymaps")
-	if km_utils_ok then
-		keymap = km_utils.keymap
+	local opts = { noremap = true, silent = true, buffer = bufnr }
+
+	opts.desc = "lsp show declarations"
+	keymap("n", "gD", function()
+		Snacks.picker.lsp_declarations()
+	end, opts)
+
+	opts.desc = "lsp show definition"
+	keymap("n", "gd", function()
+		Snacks.picker.lsp_definitions()
+	end, opts)
+	opts.desc = "signature help"
+	keymap("n", "<leader>ls", function()
+		vim.lsp.buf.signature_help()
+	end, opts)
+	-- keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", "hover", opts)
+
+	opts.desc = "lsp hover"
+	keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+	opts.desc = "goto implementation"
+	keymap("n", "gi", function()
+		Snacks.picker.lsp_implementations()
+	end, opts)
+	opts.desc = "rename"
+
+	keymap("n", "gy", function()
+		Snacks.picker.lsp_type_definitions()
+	end, opts)
+
+	opts.desc = "open float"
+	keymap("n", "go", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+
+	opts.desc = "code actions"
+	keymap("n", "<leader>la", function()
+		vim.lsp.buf.code_action()
+	end, opts)
+	opts.desc = "lsp rename"
+	keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", opts)
+
+	-- ~/.config/nvim/init.lua
+
+	-- 1. Store Neovim's native fallback hover UI logic
+	local native_hover_handler = vim.lsp.handlers["textDocument/hover"]
+
+	-- 2. Build a custom middleware interceptor
+	vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+		-- If the server sends an error or completely empty content payload, stop instantly
+		if err or not (result and result.contents) then
+			return
+		end
+
+		-- Normalize the message block into a clear string
+		local val = ""
+		if type(result.contents) == "table" and result.contents.value then
+			val = result.contents.value
+		else
+			val = tostring(result.contents)
+		end
+
+		-- 🔥 THE FINAL SHIELD:
+		-- If vtsls passes the literal blank string notification, bypass the handler.
+		-- This kills BOTH the floating window AND the background vim.notify alert.
+		if val:match("No information available") then
+			return
+		end
+
+		-- 3. Otherwise, execute normal hover processing safely
+		native_hover_handler(err, result, ctx, config)
 	end
-	keymap("n", "<leader>ldc", "<cmd>lua vim.lsp.buf.declaration()<CR>", "goto declaration", opts)
-	keymap("n", "<leader>ldf", "<cmd>lua vim.lsp.buf.definition()<CR>", "goto definition", opts)
-	keymap("n", "<leader>ls", "<cmd>lua vim.lsp.buf.signature_help()<CR>", "signature help", opts)
-	keymap("n", "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<CR>", "code action", opts)
-	keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", "hover", opts)
-	keymap("n", "<leader>li", "<cmd>lua vim.lsp.buf.implementation()<CR>", "goto implementation", opts)
-	keymap("n", "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<CR>", "rename", opts)
-	keymap("n", "<leader>ll", "<cmd>lua vim.diagnostic.open_float()<CR>", "open float", opts)
-	keymap("n", "<leader>lT", toggle_diagnostics, "toggle diagnostics", opts)
+
 	if trouble_ok then
+		opts.desc = "trouble"
 		keymap("n", "<leader>lt", function()
 			trouble.toggle("diagnostics")
-		end, "trouble", opts)
+		end, opts)
 	end
 	if tid_ok then
+		opts.desc = "toggle inline diagnostics (cursor)"
 		keymap("n", "<leader>lI", function()
 			local cursor_diag = tid.get_diagnostic_under_cursor()
 			cursor_diag.toggle()
-		end, "toggle inline diagnostics (cursor)", opts)
+		end, opts)
+
+		opts.desc = "toggle inline diagnostics (global)"
 		keymap("n", "<leader>lI", function()
 			tid.toggle()
-		end, "toggle inline diagnostics (global)", opts)
+		end, opts)
 	end
 end
 
@@ -131,7 +184,7 @@ end
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
-local on_attach = function(client, bufnr)
+local lsp_on_attach = function(client, bufnr)
 	lsp_keymaps(bufnr)
 	local wd_ok, wd = pcall(require, "workspace-diagnostics")
 
@@ -160,41 +213,8 @@ vim.diagnostic.config(diagnostic_config)
 
 vim.lsp.config("*", {
 	capabilites = common_capabilities(),
-	on_attach = on_attach,
+	on_attach = lsp_on_attach,
 })
 vim.lsp.enable(lsp_servers)
 
 require("user.null_ls")
-
-local tstools_ok, tstools = pcall(require, "typescript-tools")
-if not tstools_ok then
-	print("tstools oopsie!")
-else
-	tstools.setup({
-		on_attach = function(client, bufnr)
-			client.server_capabilities.documentFormattingProvider = false
-			client.server_capabilities.documentRangeFormattingProvider = false
-
-			if vim.bo[bufnr].filetype == "eta" then
-				vim.diagnostic.enable(false, { bufnr = bufnr })
-				client.handlers["textDocument/publishDiagnostics"] = function() end
-			end
-		end,
-		filetypes = {
-			"typescript",
-			"javascript",
-			"typescriptreact",
-			"javascriptreact",
-			"ejs",
-			"eta",
-		},
-		settings = {
-			expose_as_code_action = { "remove_unused_imports", "add_missing_imports" },
-			publish_diagnostic_on = "change",
-			code_lens = "off",
-			jsx_close_tag = { enable = true },
-			-- tsserver_path
-			cmd = { "tsgo", "--lsp", "--stdio" },
-		},
-	})
-end

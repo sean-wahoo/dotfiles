@@ -1,44 +1,22 @@
 local default_opts = {
-  noremap = true,
-  silent = true,
+	noremap = true,
+	silent = true,
 }
-
-local snacks_ok, _ = pcall(require, 'snacks')
-if not snacks_ok then
-  print("snacks oopsie!")
-end
-
-
-local dump = require('user.utils').dump
 
 ---@param mode string|table<string>
 ---@param lhs string
 ---@param rhs string|function
----@param desc string
+---@param desc string|vim.keymap.set.Opts
 ---@param opts? vim.keymap.set.Opts|{ bufnr?: number }
 local function keymap(mode, lhs, rhs, desc, opts)
-  local modes = {}
-  if type(mode) == 'table' then
-    modes = mode
-  else
-    table.insert(modes, mode)
-  end
-  opts = opts or default_opts or {}
-  if desc then
-    opts.desc = desc
-  end
-
-  if opts.bufnr ~= nil then
-    opts.buffer = opts.bufnr
-  end
-
-  if snacks_ok then
-    ---@cast opts snacks.keymap.set.Opts
-    Snacks.keymap.set(mode, lhs, rhs, opts)
-    return;
-  else
-    vim.keymap.set(mode, lhs, rhs, opts)
-  end
+	opts = opts or {}
+	if type(desc) == "string" then
+		opts.desc = desc
+	else
+		opts = desc
+	end
+	opts = vim.tbl_deep_extend("force", default_opts, opts or {})
+	vim.keymap.set(mode, lhs, rhs, opts)
 end
 
 vim.g.mapleader = " "
@@ -69,96 +47,86 @@ keymap("x", ">", ">gv", "shift right")
 
 local ok, builtin = pcall(require, "telescope.builtin")
 if not ok then
-  print("telescope builtins failed")
+	print("telescope builtins failed")
 else
-  keymap("n", "<leader>ff", builtin.find_files, "find files")
-  keymap("n", "<leader>fg", builtin.live_grep, "live grep")
-  keymap("n", "<leader>fb", builtin.buffers, "buffers")
+	keymap("n", "<leader>ff", builtin.find_files, "find files")
+	keymap("n", "<leader>fg", builtin.live_grep, "live grep")
+	keymap("n", "<leader>fb", builtin.buffers, "buffers")
 end
 
 local ok, git = pcall(require, "mini.git")
 if not ok then
-  print("mini git failed")
+	print("mini git failed")
 else
-  keymap("n", "<leader>ga", "<cmd>Git add %", "git add current file")
-  keymap("n", "<leader>gA", "<cmd>Git add .", "git add all")
-  --
-  -- keymap(
-  -- 	"v",
-  -- 	"<leader>gs",
-  -- 	[[
-  --
-  --  ]]
-  -- )
+	keymap("n", "<leader>ga", "<cmd>Git add %", "git add current file")
+	keymap("n", "<leader>gA", "<cmd>Git add .", "git add all")
+	--
+	-- keymap(
+	-- 	"v",
+	-- 	"<leader>gs",
+	-- 	[[
+	--
+	--  ]]
+	-- )
 end
 
 local snacks_ok, _ = pcall(require, "snacks")
 if not snacks_ok then
-  print("snacks failed to load!")
+	print("snacks failed to load!")
 else
-  -- pickers
+	-- pickers
 
-  keymap("n", "<leader>e", '<cmd>lua Snacks.explorer()<cr>', "file tree")
-  ---- find
-  keymap("n", "<leader><space>", "<cmd>lua Snacks.picker.smart()<cr>", "smart pick")
-  keymap("n", "<leader>ff", "<cmd>lua Snacks.picker.files()<cr>", "find files")
-  keymap("n", "<leader>fr", "<cmd>lua Snacks.picker.recent()<cr>", "recent")
-  keymap("n", "<leader>fp", "<cmd>lua Snacks.picker.projects()<cr>", "projects")
-  keymap("n", "<leader>fg", "<cmd>lua Snacks.picker.grep()<cr>", "live grep")
-  keymap("n", "<leader>fb", "<cmd>lua Snacks.picker.buffers()<cr>", "buffers")
-  keymap("n", "<leader>fn", "<cmd>lua Snacks.picker.notifications()<cr>", "notifications")
+	keymap("n", "<leader>e", "<cmd>lua Snacks.explorer()<cr>", "file tree")
+	---- find
+	keymap("n", "<leader><space>", "<cmd>lua Snacks.picker.smart()<cr>", "smart pick")
+	keymap("n", "<leader>ff", "<cmd>lua Snacks.picker.files()<cr>", "find files")
+	keymap("n", "<leader>fr", "<cmd>lua Snacks.picker.recent()<cr>", "recent")
+	keymap("n", "<leader>fp", "<cmd>lua Snacks.picker.projects()<cr>", "projects")
+	keymap("n", "<leader>fg", "<cmd>lua Snacks.picker.grep()<cr>", "live grep")
+	keymap("n", "<leader>fb", "<cmd>lua Snacks.picker.buffers()<cr>", "buffers")
+	keymap("n", "<leader>fn", "<cmd>lua Snacks.picker.notifications()<cr>", "notifications")
 
-  ---- git
-  -- keymap("n", "<leader>gb")
-
-  ---- delete buffer
-  keymap("n", "<leader>c", "<cmd>lua Snacks.bufdelete()<cr>", "delete buffer")
-
-
-  -- keymap("n", "<leader>la", "<cmd>lua Snacks.")
-
-  -- terminal
-  -- keymap('n', "<leader>tt", "<cmd>lua Snacks.terminal.toggle()<cr>", "toggle terminal")
+	---- delete buffer
+	keymap("n", "<leader>c", "<cmd>lua Snacks.bufdelete()<cr>", "delete buffer")
 end
-
--- keymap("x", "<leader>v", function ()
---   get_visual_selection()
--- end, "test")
 
 local clue_ok, clue = pcall(require, "mini.clue")
 if not clue_ok then
-  print("clue uh oh")
+	print("clue uh oh")
 else
-  clue.setup({
-    triggers = {
-      { mode = { "x", "n" }, keys = "<Leader>" },
-      { mode = "n",          keys = "g" },
-      { mode = "i",          keys = "<C-x>" },
-      { mode = "n",          keys = "z" },
-    },
-    window = {
-      delay = 250,
-    },
-    clues = {
-      { mode = "n", keys = "<Leader>g", desc = "+git" },
-      { mode = "v", keys = "<Leader>g", desc = "+git" },
-      { mode = "x", keys = "<Leader>g", desc = "+git" },
-      { mode = "n", keys = "<Leader>f", desc = "+files" },
-      { mode = "n", keys = "<Leader>l", desc = "+lsp" },
-      { mode = "n", keys = "<Leader>t", desc = "+terminal" },
-      { mode = "t", keys = "<Leader>t", desc = "+terminal" },
-      clue.gen_clues.builtin_completion(),
-      -- clue.gen_clues.g(),
-      clue.gen_clues.marks(),
-      clue.gen_clues.windows(),
-      clue.gen_clues.registers(),
-      clue.gen_clues.z(),
-      -- clue.gen_clues.s(),
-      -- clue.gen_clues.a(),
-    },
-  })
+	clue.setup({
+		triggers = {
+			{ mode = { "x", "n" }, keys = "<Leader>" },
+			{ mode = "n", keys = "g" },
+			{ mode = "i", keys = "<C-x>" },
+			{ mode = "n", keys = "z" },
+			-- { mode = "n", keys = "c" },
+			-- { mode = "n", keys = "d" },
+			-- { mode = "n", keys = "y" },
+			-- { mode = "x", keys = "c" },
+			-- { mode = "x", keys = "d" },
+			-- { mode = "x", keys = "y" },
+		},
+		window = {
+			delay = 250,
+		},
+		clues = {
+			{ mode = "n", keys = "<Leader>g", desc = "+git" },
+			{ mode = "v", keys = "<Leader>g", desc = "+git" },
+			{ mode = "x", keys = "<Leader>g", desc = "+git" },
+			{ mode = "n", keys = "<Leader>f", desc = "+files" },
+			{ mode = "n", keys = "<Leader>l", desc = "+lsp" },
+			{ mode = "n", keys = "<Leader>t", desc = "+terminal" },
+			{ mode = "t", keys = "<Leader>t", desc = "+terminal" },
+			clue.gen_clues.builtin_completion(),
+			-- clue.gen_clues.g(),
+			clue.gen_clues.marks(),
+			clue.gen_clues.windows(),
+			clue.gen_clues.registers(),
+			clue.gen_clues.z(),
+			-- clue.gen_clues.s(),
+			-- clue.gen_clues.a(),
+		},
+	})
 end
-
-return {
-  keymap = keymap,
-}
+return {keymap= keymap}
