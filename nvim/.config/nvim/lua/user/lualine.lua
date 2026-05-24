@@ -4,15 +4,6 @@ if not ok then
 	return
 end
 
-local ai_component = function()
-	if vim.g.use_ai then
-		local ai = require("user.ai")
-		return "󰚩 " .. #ai:get_plugins()
-	else
-		return "󱚡 󰜺"
-	end
-end
-
 lualine.setup({
 	opts = function(_, opts)
 		local trouble_ok, trouble = pcall(require, "trouble")
@@ -35,15 +26,10 @@ lualine.setup({
 	end,
 	sections = {
 		lualine_x = {
-			{
-				display_name = "both",
-				display_on_idle = true,
-			},
 			"encoding",
 			"fileformat",
 			"filetype",
 			"lsp_status",
-			ai_component,
 		},
 	},
 })
