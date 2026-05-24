@@ -18,17 +18,6 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
----@class ConfigSpec<T>
----@field opts? fun(_: unknown, opts: `T`)
----@field init? fun()
----@field dependencies? table<ConfigSpec>
-
----@class ConfigItem<T>: table<string
-
----@type ConfigItem
--- local plugins = {}
--- plugins
-
 local lazy_ok, lazy = pcall(require, "lazy")
 if not lazy_ok then
 	print("lazy oopsie!")
@@ -64,12 +53,12 @@ lazy.setup({
 			"vyfor/cord.nvim",
 			build = ":Cord update",
 		},
-		{
-			"kylechui/nvim-surround",
-			config = function()
-				require("nvim-surround").setup({})
-			end,
-		},
+		-- {
+		-- 	"kylechui/nvim-surround",
+		-- 	config = function()
+		-- 		require("nvim-surround").setup({})
+		-- 	end,
+		-- },
 		{ "neovim/nvim-lspconfig" },
 		{
 			"nvimtools/none-ls.nvim",
@@ -98,20 +87,9 @@ lazy.setup({
 			},
 		},
 		{
-			"akinsho/toggleterm.nvim",
-			version = "*",
-			config = true,
-			event = "VeryLazy",
-		},
-
-		{
 			"mason-org/mason.nvim",
 			"mason-org/mason-lspconfig.nvim",
 			-- "lukas-reineke/lsp-format.nvim",
-		},
-		{
-			"stevearc/conform.nvim",
-			opts = {},
 		},
 		{
 			"rachartier/tiny-inline-diagnostic.nvim",
@@ -121,39 +99,18 @@ lazy.setup({
 		{
 			url = "https://codeberg.org/andyg/leap.nvim",
 		},
-		{
-			"nvimdev/lspsaga.nvim",
-			dependencies = {
-				"nvim-tree/nvim-web-devicons",
-			},
-		},
 
 		{ "kevinhwang91/nvim-ufo", dependencies = { "kevinhwang91/promise-async" } },
-		{
-			"ray-x/lsp_signature.nvim",
-			event = "InsertEnter",
-		},
 		{
 			"onsails/lspkind.nvim",
 			event = "InsertEnter",
 		},
-		-- {
-		--   "CosmicNvim/cosmic-ui",
-		--   event = "VeryLazy",
-		--   dependencies = {
-		--     "MunifTanjim/nui.nvim",
-		--     "nvim-lua/plenary.nvim",
-		--   }
-		-- },
 		{
 			"folke/noice.nvim",
 			event = "VeryLazy",
 			dependencies = {
 				"MunifTanjim/nui.nvim",
 			},
-		},
-		{
-			"folke/twilight.nvim",
 		},
 
 		{
@@ -202,42 +159,21 @@ lazy.setup({
 			opts_extend = { "sources.default" },
 		},
 		{
-			"milanglacier/minuet-ai.nvim",
-			dependencies = {
-				"Davidyz/VectorCode",
-			},
-		},
-		{
 			"nvim-telescope/telescope.nvim",
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 			},
 		},
 		{
-			"tpope/vim-fugitive",
-			event = "VeryLazy",
-			dependencies = {
-				"lewis6991/gitsigns.nvim",
-			},
-		},
-		{
 			"nvim-lualine/lualine.nvim",
 		},
-		{
-			"lukas-reineke/indent-blankline.nvim",
-			main = "ibl",
-		},
+		-- {
+		-- 	"lukas-reineke/indent-blankline.nvim",
+		-- 	main = "ibl",
+		-- },
 		{ "mrcjkb/rustaceanvim", version = "^7", lazy = false },
 		{
 			"folke/edgy.nvim",
-			opts = function(_, opts)
-				-- local edgy_ok, edgy = pcall(require, 'user.edgy')
-				-- if not edgy_ok then
-				--   print("snacks oopsie!")
-				-- else
-				--   edgy.handle_opts(opts)
-				-- end
-			end,
 		},
 		{
 			"folke/snacks.nvim",
@@ -270,76 +206,44 @@ lazy.setup({
 				})
 			end,
 		},
-		{ "Wansmer/treesj", keys = { "<space>m", "<space>j", "<space>s" } },
 		{
 			"pmizio/typescript-tools.nvim",
 			dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 		},
-		-- {
-		--   "TabbyML/vim-tabby",
-		--   lazy = false,
-		--   dependencies = {
-		--     "neovim/nvim-lspconfig"
-		--   },
-		--   init = function()
-		--     vim.g.tabby_agent_start_command = { "npx", "tabby-agent", "--lsp", "--stdio" }
-		--     vim.g.tabby_inline_completion_trigger = "auto"
-		--     -- vim.g.tabby_inline_completion_keybinding_trigger_or_dismiss = "<C-\\>"
-		--   end,
-		-- },
 		{ "seblyng/roslyn.nvim" },
 
-		-- {
-		--   "yetone/avante.nvim",
-		--   event = "VeryLazy",
-		--   version = false,
-		--   build = vim.fn.has('win32') ~= 0 and
-		--       "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" or
-		--       "make BUILD_FROM_SOURCE=true",
-		--   dependencies = {
-		--     {
-		--       'MeanderingProgrammer/render-markdown.nvim',
-		--       opts = {
-		--         file_types = { "markdown", "Avante" },
-		--       },
-		--       ft = { "markdown", "Avante" }
-		--     }
-		--   }
-		-- }
-		--
-		--
-		--
-		-- AI AI AI AI
 		{
 			"olimorris/codecompanion.nvim",
 			version = "^19.10.0",
-			keys = {
-				{
-					"<leader>acc",
-					function()
-						if not vim.g.use_ai then
-							vim.notify("ai not enabled !")
-						else
-							vim.cmd([[CodeCompanionActions]])
-						end
-					end,
-					desc = "code companion actions",
-				},
+			dependencies = {
+				"ravitemer/mcphub.nvim",
 			},
-		},
-		{
-			"cursortab/cursortab.nvim",
-			lazy = false,
-			build = "cd server && go build",
-		},
-		{
-			"Robitx/gp.nvim",
 		},
 		{
 			"rafcamlet/nvim-luapad",
 		},
 		{
 			"j-hui/fidget.nvim",
+		},
+		{
+			"dmmulroy/tsc.nvim",
+			opts = {
+				use_trouble_qflist = true,
+			},
+		},
+		{
+			"esmuellert/codediff.nvim",
+			cmd = "CodeDiff",
+		},
+		{
+			"Exafunction/windsurf.nvim",
+			dependencies = {
+				"nvim-lua/plenary.nvim",
+				"hrsh7th/nvim-cmp",
+			},
+		},
+		{
+			"mg979/vim-visual-multi",
 		},
 	},
 	-- Configure any other settings here. See the documentation for more details.
@@ -348,5 +252,3 @@ lazy.setup({
 	-- automatically check for plugin updates
 	-- checker = { enabled = true },
 })
-
--- make a function that says 'ass' 5 times

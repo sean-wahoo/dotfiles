@@ -20,8 +20,6 @@ local on_attach = function(bufnr)
 	api.config.mappings.default_on_attach(bufnr)
 
 	keymap("n", "?", api.tree.toggle_help, opts("help"))
-
-	-- vim.keymap.set('n', '<leader>e', api.tree.)
 end
 
 nvimtree.setup({

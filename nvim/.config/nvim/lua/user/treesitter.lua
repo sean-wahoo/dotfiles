@@ -22,9 +22,6 @@ require("nvim-treesitter").install({
 	"markdown_inline",
 })
 
--- local ft_to_parser = require("nvim-treesitter.parsers").filetype_to_parsername
--- ft_to_parser.mdx = "markdown"
-
 require("nvim-ts-autotag").setup({
 	opts = {
 		enable_close = true, -- Auto close tags
@@ -45,9 +42,6 @@ tsm.setup({
 			install_info = {
 				url = "https://github.com/tree-sitter/tree-sitter-embedded-template",
 				use_repo_queries = true,
-				-- files = { "src/parser.c" },
-
-				-- requires_generate_from_grammar = true
 			},
 		},
 	},
