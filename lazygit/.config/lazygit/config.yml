@@ -1,0 +1,6 @@
+git:
+  # This enables external diffing commands
+  externalDiffCommand: git difftool --tool=codediff --no-prompt
+  mergetool:
+    # This explicitly names the merge tool we set up in Step 1
+    cmd: git mergetool --tool=codediff --no-prompt '$MERGED'
