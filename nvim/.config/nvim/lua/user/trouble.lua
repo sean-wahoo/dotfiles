@@ -4,6 +4,11 @@ if not trouble_ok then
 	return
 end
 
+local trouble_ignore_paths = {
+	"/%.next/",
+	"/%node_modules/",
+}
+
 trouble.setup({
 	restore = true,
 	open_no_results = true,
@@ -24,6 +29,16 @@ trouble.setup({
 			groups = {
 				{ "filename", format = "{file_icon} {basename:Title} {count}" },
 			},
+			filter = function(items)
+				return vim.tbl_filter(function(item)
+					for _, dir in ipairs(trouble_ignore_paths) do
+						if string.match(item.filename, dir) then
+							return false
+						end
+					end
+					return true
+				end, items)
+			end,
 			preview = {
 				type = "split",
 				relative = "win",
