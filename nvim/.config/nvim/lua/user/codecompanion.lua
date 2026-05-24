@@ -20,14 +20,12 @@ local cc_config = {
 			slash_commands = {
 				["git_files"] = {
 					description = "List git files",
-					---@param chat CodeCompanion.Chat
 					callback = function(chat)
 						local handle = io.popen("git ls-files")
 						if handle ~= nil then
 							local result = handle:read("*a")
 							handle:close()
 							chat:add_context({ content = result }, "git", "<git_files>")
-						-- chat:add_reference({ content = result }, "git", "<git_files>")
 						else
 							return vim.notify(
 								"No git files available",
@@ -73,13 +71,6 @@ local cc_config = {
 		},
 	},
 	adapters = {
-		-- acp = {
-		--   ollama_cli = function ()
-		--     return adapters.extend('ollama_cli', {
-		--       commands
-		--     })
-		--   end
-		-- }
 		http = {
 			ollama = function()
 				return adapters.extend("ollama", {
@@ -98,16 +89,4 @@ local cc_config = {
 	},
 }
 
-local M = {
-	name = "codecompanion",
-	active = false,
-}
-
-M.enable = function(self)
-	if not self.active then
-		cc.setup(cc_config)
-		self.active = true
-	end
-end
-
-return M
+cc.setup(cc_config)

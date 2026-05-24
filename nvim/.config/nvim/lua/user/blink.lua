@@ -73,8 +73,18 @@ local blink_config = {
 		},
 	},
 	sources = {
-		default = { "cursortab", "lazydev", "lsp", "buffer", "snippets", "path", "emoji" },
+		default = { "lazydev", "lsp", "buffer", "snippets", "path", "codeium" },
+		per_filetype = {
+			codecompanion = {
+				"codecompanion",
+			},
+		},
 		providers = {
+			codeium = {
+				name = "Codeium",
+				module = "codeium.blink",
+				score_offset = 100,
+			},
 			env = {
 				name = "Env",
 				module = "blink-cmp-env",
@@ -104,10 +114,6 @@ local blink_config = {
 				async = true,
 				timeout_ms = 5000,
 			},
-			-- avante = {
-			--   name = "Avante",
-			--   module = "blink-cmp-avante",
-			-- },
 			lazydev = {
 				name = "LazyDev",
 				module = "lazydev.integrations.blink",
