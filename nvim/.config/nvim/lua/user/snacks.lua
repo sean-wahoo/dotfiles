@@ -1,8 +1,3 @@
-local snacks_ok, snacks = pcall(require, "snacks")
-if not snacks_ok then
-	print("snacks oopsie!")
-end
-
 local keymap = require("user.keymaps").keymap
 local modes = { "n", "t" }
 local snacks_config = {
@@ -15,6 +10,7 @@ local snacks_config = {
 		},
 	},
 	quickfile = {},
+	profiler = {},
 	dashboard = {},
 	statuscolumn = {},
 	animate = {},

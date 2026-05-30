@@ -11,11 +11,35 @@ if not adapters_ok then
 end
 
 local cc_config = {
+	mcp = {
+		servers = {
+			["nextjs"] = {
+				cmd = { "npx", "-y", "next-devtools-mcp@latest" },
+				env = {
+					NEXTJS_DEFAULT_PORT = "3010",
+				},
+			},
+		},
+		opts = {
+			default_servers = { "nextjs" },
+		},
+	},
 	interactions = {
 		chat = {
 			adapter = {
 				name = "ollama",
 				model = "qwen2.5-coder:14b",
+			},
+			tools = {
+				["mcp"] = {
+					callback = function()
+						return require("mcphub.extensions.codecompanion")
+					end,
+					description = "nextjs",
+					opts = {
+						requires_approval = false,
+					},
+				},
 			},
 			slash_commands = {
 				["git_files"] = {

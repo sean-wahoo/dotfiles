@@ -19,6 +19,7 @@ noice.setup({
 			["vim.lsp.util.convert_input_to_markdown_lines"] = true,
 			["vim.lsp.util.stylize_markdown"] = true,
 			["cmp.entry.get_documentation"] = true,
+			-- ["cmp.entry.get_completion_item"] = true,
 		},
 		hover = { enabled = true },
 		documentation = {
@@ -47,14 +48,14 @@ noice.setup({
 	},
 })
 
-local notify_ok, notify = pcall(require, "notify")
-if not notify_ok then
-	print("notify oopsie!")
-	return
-end
-notify.setup({
-	background_colour = "#000000",
-	timeout = 3000,
-	render = "compact",
-	merge_duplicates = true,
-})
+-- local notify_ok, notify = pcall(require, "notify")
+-- if not notify_ok then
+-- 	print("notify oopsie!")
+-- 	return
+-- end
+-- notify.setup({
+-- 	background_colour = "#000000",
+-- 	timeout = 3000,
+-- 	render = "compact",
+-- 	merge_duplicates = true,
+-- })
