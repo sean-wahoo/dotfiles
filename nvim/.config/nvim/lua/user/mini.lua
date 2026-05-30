@@ -30,6 +30,18 @@ require("ts_context_commentstring").setup({
 	enable_autocmd = false,
 })
 
+local function shorthand_hex_color(buf_id, match, data)
+	local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
+	-- Expand #RGB to #RRGGBB
+	local hex = string.format("#%s%s%s%s%s%s", r, r, g, g, b, b)
+
+	-- Automatically compute whether white or black text is easier to read over the background
+	local r_num, g_num, b_num = tonumber(r .. r, 16), tonumber(g .. g, 16), tonumber(b .. b, 16)
+	local luma = (0.299 * r_num + 0.587 * g_num + 0.114 * b_num) / 255
+	local fg = luma > 0.5 and "#000000" or "#FFFFFF"
+
+	return hi.compute_hex_color_group(hex, "bg", { fg = fg })
+end
 local mini_plugins = {
 	-- fuzzy = {},
 	ai = {
@@ -51,11 +63,24 @@ local mini_plugins = {
 		open = { enable = true },
 		close = { enable = false },
 	},
-	-- hipatters = {
-	-- 	highlighters = {
-	-- 		hi.gen_highlighter.hex_color(),
-	-- 	},
-	-- },
+	hipatterns = {
+		highlighters = {
+			hex_color = hi.gen_highlighter.hex_color(),
+			shorthand_hex = {
+				pattern = "#%x%x%x%f[%X]",
+				group = shorthand_hex_color,
+			},
+			-- tailwind = {
+			--   pattern = "%f[%w_~-]text-[a-z]+-%d%d%d?%f[%W]",
+			--   group = function (_, match)
+			--     local color, weight = match:match("text-([a-z]+)-(%d+)")
+			--     if color and weight then
+			--       local clients = vim.lsp.get_clients({ name = "tailwindcss" })
+			--     end
+			--   end
+			-- }
+		},
+	},
 	comment = {
 		options = {
 			custom_commentstring = function()

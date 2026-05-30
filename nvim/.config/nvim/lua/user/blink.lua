@@ -74,16 +74,15 @@ local blink_config = {
 	},
 	sources = {
 		default = { "lazydev", "lsp", "buffer", "snippets", "path", "codeium" },
-		per_filetype = {
-			codecompanion = {
-				"codecompanion",
-			},
-		},
 		providers = {
 			codeium = {
 				name = "Codeium",
 				module = "codeium.blink",
-				score_offset = 100,
+				timeout_ms = 2000,
+				score_offset = -5,
+				opts = {
+					async = true,
+				},
 			},
 			env = {
 				name = "Env",
@@ -107,12 +106,6 @@ local blink_config = {
 						return vim.tbl_contains({ "gitcommit", "markdown" }, vim.o.filetype)
 					end,
 				},
-			},
-			cursortab = {
-				module = "cursortab.blink",
-				name = "cursortab",
-				async = true,
-				timeout_ms = 5000,
 			},
 			lazydev = {
 				name = "LazyDev",

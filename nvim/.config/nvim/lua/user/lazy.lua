@@ -45,6 +45,9 @@ lazy.setup({
 			branch = "main",
 			lazy = false,
 			build = ":TSUpdate",
+			dependencies = {
+				"nvim-tree/nvim-web-devicons",
+			},
 		},
 		{ "nvim-treesitter/nvim-treesitter-context" },
 		{ "romus204/tree-sitter-manager.nvim" },
@@ -183,6 +186,9 @@ lazy.setup({
 					print("snacks oopsie!")
 				else
 					snacks.handle_opts(opts)
+
+					Snacks.toggle.profiler():map("<leader>pp")
+					Snacks.toggle.profiler_highlights():map("<leader>ph")
 				end
 			end,
 			init = function()
@@ -216,7 +222,33 @@ lazy.setup({
 			"olimorris/codecompanion.nvim",
 			version = "^19.10.0",
 			dependencies = {
-				"ravitemer/mcphub.nvim",
+				{
+					"ravitemer/mcphub.nvim",
+					build = "npm install -g mcp-hub@latest",
+					config = function()
+						-- 1. Identify the project root folder
+						local project_root = vim.fs.root(0, { ".git", "package.json" }) or vim.fn.getcwd()
+
+						-- 2. Define your target configuration file paths
+						local local_mcp_config = project_root .. "/.mcp.json"
+						local fallback_mcp_config = project_root .. "/mcpServers.json"
+						local global_mcp_config = vim.fn.expand("~/.config/mcp-servers.json")
+
+						-- 3. Pick the path by order of precedence
+						local active_config = global_mcp_config
+						if vim.fn.filereadable(local_mcp_config) == 1 then
+							active_config = local_mcp_config
+						elseif vim.fn.filereadable(fallback_mcp_config) == 1 then
+							active_config = fallback_mcp_config
+						end
+
+						-- 4. Pass the calculated file path to MCPHub
+						require("mcphub").setup({
+							port = 3000,
+							config = active_config,
+						})
+					end,
+				},
 			},
 		},
 		{
@@ -244,6 +276,10 @@ lazy.setup({
 		},
 		{
 			"mg979/vim-visual-multi",
+		},
+
+		{
+			"lewis6991/gitsigns.nvim",
 		},
 	},
 	-- Configure any other settings here. See the documentation for more details.
