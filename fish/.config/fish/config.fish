@@ -21,6 +21,10 @@ if status is-interactive
     direnv hook fish | source
   end
 
+  if test -f /usr/bin/zoxide
+    zoxide init fish | source
+  end
+
   if test -f /usr/bin/eza
     alias ls="eza -1lao --git --smart-group --group-directories-first --icons"
   end
