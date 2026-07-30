@@ -1,0 +1,15 @@
+[Unit]
+Description=preload model into ollama
+After=ollama.service
+Requires=ollama.service
+
+[Service]
+Type=oneshot
+ExecStart=/home/%i/.config/systemd/user/scripts/preload-model.sh
+RemainAfterExit=yes
+User=%i
+Group=%i
+
+[Install]
+WantedBy=multi-user.target
+DefaultInstance=sean
