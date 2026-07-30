@@ -170,47 +170,12 @@ lazy.setup({
 		{
 			"nvim-lualine/lualine.nvim",
 		},
-		-- {
-		-- 	"lukas-reineke/indent-blankline.nvim",
-		-- 	main = "ibl",
-		-- },
 		{ "mrcjkb/rustaceanvim", version = "^7", lazy = false },
 		{
 			"folke/edgy.nvim",
 		},
 		{
 			"folke/snacks.nvim",
-			opts = function(_, opts)
-				local snacks_ok, snacks = pcall(require, "user.snacks")
-				if not snacks_ok then
-					print("snacks oopsie!")
-				else
-					snacks.handle_opts(opts)
-
-					Snacks.toggle.profiler():map("<leader>pp")
-					Snacks.toggle.profiler_highlights():map("<leader>ph")
-				end
-			end,
-			init = function()
-				vim.api.nvim_create_autocmd("User", {
-					pattern = "VeryLazy",
-					callback = function()
-						_G.dd = function(...)
-							Snacks.debug.inspect(...)
-						end
-						_G.bt = function(...)
-							Snacks.debug.backtrace(...)
-						end
-						if vim.fn.has("nvim-0.11") == 1 then
-							vim._print = function(_, ...)
-								dd(...)
-							end
-						else
-							vim.print = _G.dd
-						end
-					end,
-				})
-			end,
 		},
 		{
 			"pmizio/typescript-tools.nvim",
@@ -221,35 +186,11 @@ lazy.setup({
 		{
 			"olimorris/codecompanion.nvim",
 			version = "^19.10.0",
-			dependencies = {
-				{
-					"ravitemer/mcphub.nvim",
-					build = "npm install -g mcp-hub@latest",
-					config = function()
-						-- 1. Identify the project root folder
-						local project_root = vim.fs.root(0, { ".git", "package.json" }) or vim.fn.getcwd()
-
-						-- 2. Define your target configuration file paths
-						local local_mcp_config = project_root .. "/.mcp.json"
-						local fallback_mcp_config = project_root .. "/mcpServers.json"
-						local global_mcp_config = vim.fn.expand("~/.config/mcp-servers.json")
-
-						-- 3. Pick the path by order of precedence
-						local active_config = global_mcp_config
-						if vim.fn.filereadable(local_mcp_config) == 1 then
-							active_config = local_mcp_config
-						elseif vim.fn.filereadable(fallback_mcp_config) == 1 then
-							active_config = fallback_mcp_config
-						end
-
-						-- 4. Pass the calculated file path to MCPHub
-						require("mcphub").setup({
-							port = 3000,
-							config = active_config,
-						})
-					end,
-				},
-			},
+		},
+		{
+			"nemanjamalesija/smart-paste.nvim",
+			event = "VeryLazy",
+			config = true,
 		},
 		{
 			"rafcamlet/nvim-luapad",
@@ -280,6 +221,9 @@ lazy.setup({
 
 		{
 			"lewis6991/gitsigns.nvim",
+		},
+		{
+			"tpope/vim-fugitive",
 		},
 	},
 	-- Configure any other settings here. See the documentation for more details.

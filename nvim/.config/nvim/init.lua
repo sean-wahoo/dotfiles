@@ -12,6 +12,16 @@ vim.filetype.add({
 	},
 })
 
+if vim.env.PROF then
+	local snacks = vim.fn.stdpath("data") .. "/lazy/snacks.nvim"
+	vim.opt.rtp:append(snacks)
+	require("snacks.profiler").startup({
+		startup = {
+			event = "VimEnter",
+		},
+	})
+end
+
 require("user.autocmds")
 require("user.options")
 require("user.lazy")
@@ -32,7 +42,6 @@ require("user.transparent")
 require("user.cord")
 require("user.lsp")
 require("user.noice")
--- require("user.snacks")
 require("user.edgy")
 require("user.ai")
--- require("user.windsurf")
+require("user.codecompanion")

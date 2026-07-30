@@ -1,4 +1,10 @@
 local keymap = require("user.keymaps").keymap
+local snacks_ok, snacks = pcall(require, "snacks")
+if not snacks_ok then
+	print("snacks failed to load!")
+	return
+end
+
 local modes = { "n", "t" }
 local snacks_config = {
 	notifier = {},
@@ -35,31 +41,16 @@ local snacks_config = {
 	},
 }
 
-local M = {
-	---@type fun(opts: snacks.terminal.Config)
-	handle_opts = function(opts)
-		for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
-			opts[pos] = opts[pos] or {}
-			table.insert(opts[pos], {
-				ft = "snacks_terminal",
-				size = { height = 0.4 },
-				title = "%{b:snacks_terminal_id}: %{b:term_title}",
-				pinned = true,
-				filter = function(buf, win)
-					return vim.w[win].snacks_win
-						and vim.w[win].snacks_win.position == pos
-						and vim.w[win].snacks_win.relative == "editor"
-						and not vim.w[win].trouble_preview
-				end,
-			})
-		end
-		vim.tbl_deep_extend("force", opts, snacks_config)
-	end,
-}
-
+snacks.setup(snacks_config)
 keymap(modes, "<leader>tn", function()
-	Snacks.terminal.open()
+	snacks.terminal.open()
 end, "new terminal")
+
+snacks.toggle.profiler():map("<leader>pp")
+snacks.toggle.profiler_highlights():map("<leader>ph")
+keymap("n", "<leader>ps", function()
+	snacks.profiler.scratch()
+end, "scratch profiler")
 
 local mini_keymap_ok, mini_keymap = pcall(require, "mini.keymap")
 if not mini_keymap_ok then
@@ -71,5 +62,4 @@ else
 	mini_keymap.map_combo("t", "jk", "<bs><bs><esc><esc>")
 	mini_keymap.map_combo("t", "kj", "<bs><bs><esc><esc>")
 end
-
-return M
+return snacks

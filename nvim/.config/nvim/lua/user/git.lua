@@ -10,13 +10,8 @@ local function toggle_stage_selection()
 	gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
 end
 
-local function create_commit()
-	local commit_message = vim.fn.input("commit message: ")
-	vim.cmd("Git commit -m '" .. commit_message .. "'")
-end
-
 keymap("v", "<leader>gs", toggle_stage_selection, { desc = "stage selection" })
-keymap("n", "<leader>gc", create_commit, { desc = "create commit" })
+keymap("n", "<leader>gc", [[<cmd>Git commit<CR>]], { desc = "create commit" })
 keymap("n", "<leader>gv", gitsigns.preview_hunk_inline, { desc = "preview hunk" })
 
 gitsigns.setup({

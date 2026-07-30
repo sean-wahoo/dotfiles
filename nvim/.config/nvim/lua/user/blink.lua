@@ -80,9 +80,7 @@ local blink_config = {
 				module = "codeium.blink",
 				timeout_ms = 2000,
 				score_offset = -5,
-				opts = {
-					async = true,
-				},
+				async = true,
 			},
 			env = {
 				name = "Env",
