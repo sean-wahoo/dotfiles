@@ -26,7 +26,7 @@ if status is-interactive
   end
 
   if test -f /usr/bin/eza
-    alias ls="eza -1lao --git --smart-group --group-directories-first --icons"
+    alias ls="eza -1lao --git --smart-group --group-directories-first --icons=auto "
   end
   function y
     set tmp (mktemp -t "yazi-cwd.XXXXXX")
@@ -44,8 +44,8 @@ end
 
 # pnpm
 set -gx PNPM_HOME "/home/sean/.local/share/pnpm"
-if not string match -q -- $PNPM_HOME $PATH
-  set -gx PATH "$PNPM_HOME" $PATH
+if not string match -q -- "$PNPM_HOME/bin" $PATH
+  set -gx PATH "$PNPM_HOME/bin" $PATH
 end
 # pnpm end
 
