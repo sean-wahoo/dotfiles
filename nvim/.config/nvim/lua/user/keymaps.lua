@@ -58,16 +58,8 @@ local ok, git = pcall(require, "mini.git")
 if not ok then
 	print("mini git failed")
 else
-	keymap("n", "<leader>ga", "<cmd>Git add %", "git add current file")
-	keymap("n", "<leader>gA", "<cmd>Git add .", "git add all")
-	--
-	-- keymap(
-	-- 	"v",
-	-- 	"<leader>gs",
-	-- 	[[
-	--
-	--  ]]
-	-- )
+	keymap("n", "<leader>ga", "<cmd>Git add %<CR>", "git add current file")
+	keymap("n", "<leader>gA", "<cmd>Git add .<CR>", "git add all")
 end
 
 local snacks_ok, _ = pcall(require, "snacks")
@@ -100,12 +92,6 @@ else
 			{ mode = "n", keys = "g" },
 			{ mode = "i", keys = "<C-x>" },
 			{ mode = "n", keys = "z" },
-			-- { mode = "n", keys = "c" },
-			-- { mode = "n", keys = "d" },
-			-- { mode = "n", keys = "y" },
-			-- { mode = "x", keys = "c" },
-			-- { mode = "x", keys = "d" },
-			-- { mode = "x", keys = "y" },
 		},
 		window = {
 			delay = 250,
@@ -119,14 +105,11 @@ else
 			{ mode = "n", keys = "<Leader>t", desc = "+terminal" },
 			{ mode = "t", keys = "<Leader>t", desc = "+terminal" },
 			clue.gen_clues.builtin_completion(),
-			-- clue.gen_clues.g(),
 			clue.gen_clues.marks(),
 			clue.gen_clues.windows(),
 			clue.gen_clues.registers(),
 			clue.gen_clues.z(),
-			-- clue.gen_clues.s(),
-			-- clue.gen_clues.a(),
 		},
 	})
 end
-return {keymap= keymap}
+return { keymap = keymap }
