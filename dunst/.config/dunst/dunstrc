@@ -38,3 +38,12 @@
 [songinfo]
   stack-tag = "songinfo"
   max_icon_size = 128
+
+[discord_intercept]
+  appname = "Discord"
+  script = /home/sean/.local/bin/discord-dbus-monitor
+  skip_display = true
+[discord_intercept_lower]
+  appname = "discord"
+  script = /home/sean/.local/bin/discord-dbus-monitor
+  skip_display = true
