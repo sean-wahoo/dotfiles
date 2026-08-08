@@ -32,3 +32,11 @@ codediff.setup({
 		layout = "inline",
 	},
 })
+
+local diffbandit_ok, diffbandit = pcall(require, "diffbandit")
+if not diffbandit_ok then
+	print("diffbandit oopsie!")
+else
+	local config = {}
+	diffbandit.setup(config)
+end
