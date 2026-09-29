@@ -48,6 +48,59 @@ local blink_config = {
 	},
 	keymap = {
 		preset = "default",
+		-- Prefer an inline suggestion (e.g. neocodeium) over blink's own items.
+		-- Each custom function returns nil when there is no inline suggestion so
+		-- blink's built-in command runs next, keeping normal behaviour intact.
+		["<C-y>"] = {
+			function()
+				local nc_ok, neocodeium = pcall(require, "neocodeium")
+				if nc_ok and neocodeium.visible() then
+					neocodeium.accept()
+					return true
+				end
+			end,
+			"select_and_accept",
+			"fallback",
+		},
+		["<C-e>"] = {
+			function(cmp)
+				local nc_ok, neocodeium = pcall(require, "neocodeium")
+				if nc_ok and neocodeium.visible() then
+					neocodeium.clear()
+					-- The inline suggestion is gone, so let blink offer its own
+					-- completions again (otherwise the menu stays hidden until
+					-- the next trigger/keystroke).
+					vim.schedule(function()
+						cmp.show()
+					end)
+					return true
+				end
+			end,
+			"cancel",
+			"fallback",
+		},
+		["<C-n>"] = {
+			function()
+				local nc_ok, neocodeium = pcall(require, "neocodeium")
+				if nc_ok and neocodeium.visible() then
+					neocodeium.cycle_or_complete(1)
+					return true
+				end
+			end,
+			"select_next",
+			"fallback",
+		},
+		["<C-p>"] = {
+			function()
+				local nc_ok, neocodeium = pcall(require, "neocodeium")
+				if nc_ok and neocodeium.visible() then
+					neocodeium.cycle_or_complete(-1)
+					return true
+				end
+			end,
+			"select_prev",
+			"fallback",
+		},
 	},
 	snippets = {
 		preset = "luasnip",
@@ -73,15 +126,15 @@ local blink_config = {
 		},
 	},
 	sources = {
-		default = { "lazydev", "lsp", "buffer", "snippets", "path", "codeium" },
+		default = { "lazydev", "lsp", "buffer", "snippets", "path" },
 		providers = {
-			codeium = {
-				name = "Codeium",
-				module = "codeium.blink",
-				timeout_ms = 2000,
-				score_offset = -5,
-				async = true,
-			},
+			-- codeium = {
+			-- 	name = "Codeium",
+			-- 	module = "codeium.blink",
+			-- 	timeout_ms = 2000,
+			-- 	score_offset = -5,
+			-- 	async = true,
+			-- },
 			env = {
 				name = "Env",
 				module = "blink-cmp-env",
@@ -114,6 +167,12 @@ local blink_config = {
 	},
 	completion = {
 		menu = {
+			-- Yield the menu to an inline suggestion (e.g. neocodeium) whenever
+			-- one is visible, so the two never compete on screen.
+			auto_show = function()
+				local nc_ok, neocodeium = pcall(require, "neocodeium")
+				return not (nc_ok and neocodeium.visible())
+			end,
 			draw = {
 				columns = {
 					{ "label", "label_description", gap = 1 },

@@ -24,12 +24,14 @@ local cc_config = {
 	-- 		default_servers = { "nextjs" },
 	-- 	},
 	-- },
+	throttle_rendering = false,
 	interactions = {
 		chat = {
-			adapter = {
-				name = "ollama",
-				model = "qwen2.5-coder:14b",
-			},
+			adapter = "cline_cli",
+			-- adapter = {
+			-- 	-- name = "openai",
+			-- 	-- model = "cline-pass/deepseek-v4-flash",
+			-- },
 			-- tools = {
 			-- 	["mcp"] = {
 			-- 		callback = function()
@@ -65,26 +67,29 @@ local cc_config = {
 			},
 		},
 		inline = {
-			adapter = "ollama",
-			keymaps = {
-				accept_change = {
-					modes = { n = "ga" },
-					description = "Accept Change (ollama)",
-				},
-				reject_change = {
-					modes = { n = "gr" },
-					description = "Reject Change (ollama)",
-				},
-			},
+			adapter = "cline_cli",
+			-- adapter = "openai",
+			-- keymaps = {
+			-- 	accept_change = {
+			-- 		modes = { n = "ga" },
+			-- 		description = "Accept Change (openai)",
+			-- 	},
+			-- 	reject_change = {
+			-- 		modes = { n = "gr" },
+			-- 		description = "Reject Change (openai)",
+			-- 	},
+			-- },
 		},
 		cli = {
-			adapter = "ollama",
+			adapter = "cline_cli",
+			-- adapter = "openai",
 		},
 		background = {
-			adapter = {
-				name = "ollama",
-				model = "qwen-7b-instruct",
-			},
+			adapter = "cline_cli",
+			-- adapter = {
+			-- 	name = "openai",
+			-- 	model = "cline-pass/deepseek-v4-flash",
+			-- },
 		},
 	},
 	display = {
@@ -95,21 +100,70 @@ local cc_config = {
 		},
 	},
 	adapters = {
-		http = {
-			ollama = function()
-				return adapters.extend("ollama", {
-					env = {
-						url = "http://localhost:11434",
-					},
+		cline_cli = function()
+			return adapters.extend("cline_cli", {
+				defaults = {
+					model = "meta-llama/llama-3.3-70b-instruct",
+				},
+			})
+		end,
+		cline_pass = function()
+			return adapters.extend("openai_compatible", {
+				name = "cline_pass",
+				env = {
+					url = "https://cline.bot",
+					api_key = "CLINE_PASS_API_KEY",
 					headers = {
-						["Content-Type"] = "application/json",
+						["Accept"] = "text/event-stream",
+						["Cache-Control"] = "no-cache",
+						["Connection"] = "keep-alive",
+						["X-Cline-Stream"] = "true",
 					},
-					parameters = {
-						sync = true,
+				},
+				schema = "openai",
+				parameters = {
+					model = "meta-llama/llama-3.3-70b-instruct",
+					-- model = "cline-pass/deepseek-v4-flash",
+				},
+			})
+		end,
+		openai = function()
+			return adapters.extend("openai_compatible", {
+				name = "cline_pass",
+				env = {
+					url = "https://cline.bot",
+					api_key = "CLINE_PASS_API_KEY",
+					headers = {
+						["Accept"] = "text/event-stream",
+						["Cache-Control"] = "no-cache",
+						["Connection"] = "keep-alive",
+						["X-Cline-Stream"] = "true",
 					},
-				})
-			end,
-		},
+				},
+				schema = "openai",
+				parameters = {
+					model = "meta-llama/llama-3.3-70b-instruct",
+					-- model = "cline-pass/deepseek-v4-flash",
+				},
+			})
+			-- return {
+			-- 	name = "openai",
+			-- 	env = {
+			-- 		url = "https://api.cline.bot/api/v1",
+			-- 		api_key = "CLINE_PASS_API_KEY",
+			-- 		headers = {
+			-- 			["Accept"] = "text/event-stream",
+			-- 			["Cache-Control"] = "no-cache",
+			-- 			["Connection"] = "keep-alive",
+			-- 			["X-Cline-Stream"] = "true",
+			-- 		},
+			-- 	},
+			-- 	schema = "openai",
+			-- 	parameters = {
+			-- 		model = "cline-pass/deepseek-v4-flash",
+			-- 	},
+			-- }
+		end,
 	},
 }
 

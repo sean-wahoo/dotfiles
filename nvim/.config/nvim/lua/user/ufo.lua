@@ -19,4 +19,13 @@ vim.opt.fillchars:append({
 	foldclose = "",
 })
 
-ufo.setup()
+ufo.setup({
+	provider_selector = function(_, filetype, _)
+		-- Avante's sidebar drives its own folds (thinking blocks) through a
+		-- foldexpr, so ufo must not take over that buffer. See user/avante_folds.lua.
+		if filetype == "Avante" then
+			return ""
+		end
+		return nil
+	end,
+})

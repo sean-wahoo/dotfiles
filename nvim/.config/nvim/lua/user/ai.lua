@@ -43,5 +43,6 @@ end
 -- end
 
 check_ollama()
-pcall(require, "user.windsurf")
+pcall(require, "user.neocodeium")
+-- pcall(require, "user.windsurf")
 -- check_windsurf()
