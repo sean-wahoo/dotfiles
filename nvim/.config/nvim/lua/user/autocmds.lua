@@ -1,3 +1,35 @@
+local function darken_color(hex_str, percent)
+	if not hex_str or hex_str == "None" or not hex_str:match("^#") then
+		return nil
+	end
+	local hex = hex_str:gsub("#", "")
+
+	local r = tonumber(hex:sub(1, 2), 16)
+	local g = tonumber(hex:sub(3, 4), 16)
+	local b = tonumber(hex:sub(5, 6), 16)
+
+	local factor = 1 - (percent / 100)
+
+	r = math.max(0, math.min(255, math.floor(r * factor)))
+	g = math.max(0, math.min(255, math.floor(g * factor)))
+	b = math.max(0, math.min(255, math.floor(b * factor)))
+
+	return string.format("#%02x%02x%02x", r, g, b)
+end
+
+local function get_hl_hex(name, attr)
+	local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
+	local color = hl[attr]
+
+	if not color then
+		return ""
+	end
+	return string.format("#%06x", color)
+end
+-- local default_cursor_hl = "#9da9a0"
+local default_cursor_hl = get_hl_hex("CursorLineNr", "fg")
+local default_line_hl = get_hl_hex("LineNr", "fg")
+
 local definitions = {
 	{
 		"TextYankPost",
@@ -37,7 +69,7 @@ local definitions = {
 				"help",
 				"man",
 				"lspinfo",
-				"DressingSelext",
+							"DressingSelect",
 				"nvim-tree",
 			},
 			callback = function()
@@ -124,6 +156,41 @@ local definitions = {
 			end,
 		},
 	},
+	{
+		{ "InsertEnter", "InsertLeave", "ModeChanged" },
+		{
+			group = "ModeLineNumbers",
+			callback = function()
+				local mode = vim.fn.mode()
+				-- local default_color = syntax.LineNr.fg
+
+				-- local hl = require("everforest.highlights")
+				-- local palette = colors.generate_palette({ background = "medium" }, "dark")
+				-- local syntax = hl.generate_syntax(palette, {})
+				--
+
+				-- for k, v in pairs(syntax) do
+				--   if k == "LineNr" then
+				--     default_color = v.fg
+				--   end
+				-- end
+
+				if mode == "i" then
+					vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#a7c080", bold = true })
+					vim.api.nvim_set_hl(0, "LineNr", { fg = darken_color(get_hl_hex("CursorLineNr", "fg"), 40) })
+				elseif mode == "v" or mode == "V" or mode == "\22" then
+					vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#d699b6", bold = true })
+					vim.api.nvim_set_hl(0, "LineNr", { fg = darken_color(get_hl_hex("CursorLineNr", "fg"), 40) })
+				else
+					vim.api.nvim_set_hl(0, "CursorLineNr", { fg = default_cursor_hl })
+					vim.api.nvim_set_hl(0, "LineNr", { fg = default_line_hl })
+				end
+			end,
+			group_opts = {
+				clear = true,
+			},
+		},
+	},
 }
 
 -- Add this to your init.lua or codecompanion config
@@ -182,7 +249,9 @@ for _, entry in ipairs(definitions) do
 	if type(opts.group) == "string" and opts.group ~= "" then
 		local exists, _ = pcall(vim.api.nvim_get_autocmds, { group = opts.group })
 		if not exists then
-			vim.api.nvim_create_augroup(opts.group, {})
+			local group_opts = opts.group_opts or {}
+			vim.api.nvim_create_augroup(opts.group, group_opts)
+			opts.group_opts = nil
 		end
 	end
 	vim.api.nvim_create_autocmd(event, opts)

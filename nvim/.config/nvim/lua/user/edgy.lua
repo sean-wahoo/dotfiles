@@ -20,7 +20,6 @@ for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
 		size = { height = 0.4 },
 		title = "%{b:snacks_terminal_id}: %{b:term_title}",
 		filter = function(buf, win)
-			print(vim.w[win].snacks_win)
 			return vim.w[win].snacks_win
 				and vim.w[win].snacks_win.position == pos
 				and vim.w[win].snacks_win.relative == "editor"

@@ -21,6 +21,9 @@ end
 
 vim.g.mapleader = " "
 
+keymap("n", "<leader>q", "<cmd>q<CR>", "quit")
+-- keymap("n", "<leader>Q", "<cmd>qa<CR>", "quit all")
+
 -- window stuff
 keymap("n", "<C-h>", "<C-w>h", "window left")
 keymap("n", "<C-j>", "<C-w>j", "window down")
@@ -37,7 +40,6 @@ keymap("n", "<S-h>", "<cmd>bprev<CR>", "buffer prev")
 keymap("n", "<S-l>", "<cmd>bnext<CR>", "buffer next")
 --
 -- file explorer
-keymap("n", "<leader>e", "<cmd>Lexplore 30<cr>", "netrw")
 keymap("n", "<leader>h", ":split<cr>", "h split")
 keymap("n", "<leader>v", ":vsplit<cr>", "v split")
 
@@ -45,17 +47,10 @@ keymap("n", "<leader>v", ":vsplit<cr>", "v split")
 keymap("x", "<", "<gv", "shift left")
 keymap("x", ">", ">gv", "shift right")
 
-local ok, builtin = pcall(require, "telescope.builtin")
-if not ok then
-	print("telescope builtins failed")
-else
-	keymap("n", "<leader>ff", builtin.find_files, "find files")
-	keymap("n", "<leader>fg", builtin.live_grep, "live grep")
-	keymap("n", "<leader>fb", builtin.buffers, "buffers")
-end
+keymap("n", "<leader>w", "<cmd>noautocmd write<CR>", "save w/o format")
 
-local ok, git = pcall(require, "mini.git")
-if not ok then
+local git_ok, _ = pcall(require, "mini.git")
+if not git_ok then
 	print("mini git failed")
 else
 	keymap("n", "<leader>ga", "<cmd>Git add %<CR>", "git add current file")
@@ -67,7 +62,6 @@ if not snacks_ok then
 	print("snacks failed to load!")
 else
 	-- pickers
-
 	keymap("n", "<leader>e", "<cmd>lua Snacks.explorer()<cr>", "file tree")
 	---- find
 	keymap("n", "<leader><space>", "<cmd>lua Snacks.picker.smart()<cr>", "smart pick")

@@ -46,6 +46,16 @@ local mini_plugins = {
 	-- fuzzy = {},
 	ai = {
 		search_method = "cover_or_nearest",
+		custom_textobjects = {
+			["F"] = gen_spec.treesitter({
+				a = "@function.outer",
+				i = "@function.inner",
+			}),
+			["c"] = gen_spec.treesitter({
+				a = "@class.outer",
+				i = "@class.inner",
+			}),
+		},
 	},
 	pairs = {},
 	-- tabline = {},
@@ -100,6 +110,18 @@ local mini_plugins = {
 	sessions = {
 		autoread = true,
 		autowrite = true,
+		hooks = {
+			post = {
+				read = function()
+					for _, win in ipairs(vim.api.nvim_list_wins()) do
+						local buf = vim.api.nvim_win_get_buf(win)
+						if vim.api.nvim_buf_get_name(buf) == "" then
+							vim.api.nvim_win_close(win, true)
+						end
+					end
+				end,
+			},
+		},
 	},
 	bracketed = {},
 	-- bufremove = {},
@@ -133,7 +155,6 @@ for k, v in pairs(mini_plugins) do
 		ok, p = pcall(require, "mini." .. k)
 		if not ok then
 			print("mini" .. k .. " failed to load")
-			errors[k] = true
 			goto continue
 		else
 			MiniPlugins:set_plugin(k, p)
