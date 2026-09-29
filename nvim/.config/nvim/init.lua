@@ -1,3 +1,9 @@
+local uv = vim.uv or vim.loop
+local stdout = uv.new_tty(1, false)
+if stdout then
+	stdout:set_mode(0)
+end
+
 vim.loader.enable()
 -- In your config before loading plugins
 vim.opt.runtimepath:prepend(vim.fn.stdpath("data") .. "/lazy/nvim-treesitter")
@@ -22,11 +28,13 @@ if vim.env.PROF then
 	})
 end
 
-require("user.autocmds")
 require("user.options")
 require("user.lazy")
-require("user.git")
 require("user.colorscheme")
+require("user.colorscheme_picker")
+require("user.autocmds")
+require("user.snacks")
+require("user.git")
 require("user.treesitter")
 require("user.telescope")
 require("user.mini")
@@ -45,4 +53,7 @@ require("user.noice")
 require("user.edgy")
 require("user.ai")
 require("user.codecompanion")
-require("user.marks")
+-- require("user.marks")
+require("user.dap")
+require("user.xmake")
+require("user.avante")

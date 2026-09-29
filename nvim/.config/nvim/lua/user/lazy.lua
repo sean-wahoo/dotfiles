@@ -25,7 +25,13 @@ if not lazy_ok then
 end
 
 lazy.setup({
+	git = {
+		timeout = 300,
+	},
 	spec = {
+		-- ============================================================================
+		-- Development Tools
+		-- ============================================================================
 		{
 			"folke/lazydev.nvim",
 			ft = "lua",
@@ -36,10 +42,11 @@ lazy.setup({
 				},
 			},
 		},
-		{
-			"rcarriga/nvim-dap-ui",
-			dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
-		},
+		{ "rafcamlet/nvim-luapad" },
+
+		-- ============================================================================
+		-- Treesitter
+		-- ============================================================================
 		{
 			"nvim-treesitter/nvim-treesitter",
 			branch = "main",
@@ -51,48 +58,26 @@ lazy.setup({
 		},
 		{ "nvim-treesitter/nvim-treesitter-context" },
 		{ "romus204/tree-sitter-manager.nvim" },
-		{ "rcarriga/nvim-notify" },
-		{
-			"vyfor/cord.nvim",
-			build = ":Cord update",
-		},
-		-- {
-		-- 	"kylechui/nvim-surround",
-		-- 	config = function()
-		-- 		require("nvim-surround").setup({})
-		-- 	end,
-		-- },
+		{ "JoosepAlviste/nvim-ts-context-commentstring" },
+		{ "windwp/nvim-ts-autotag", event = "VeryLazy" },
+
+		-- ============================================================================
+		-- LSP & Language Servers
+		-- ============================================================================
 		{ "neovim/nvim-lspconfig" },
+		{
+			"mason-org/mason.nvim",
+			"mason-org/mason-lspconfig.nvim",
+		},
 		{
 			"nvimtools/none-ls.nvim",
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 			},
 		},
-		{ "JoosepAlviste/nvim-ts-context-commentstring" },
-		{ "windwp/nvim-ts-autotag", event = "VeryLazy" },
-
-		-- colorscheme
-		{ "sainnhe/everforest", lazy = false, priority = 1000 },
-		{ "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
-		{ "catppuccin/nvim" },
-
-		{ "norcalli/nvim-colorizer.lua" },
-		{ "akinsho/bufferline.nvim" },
 		{
-			"nvim-mini/mini.nvim",
-			version = false,
-			dependencies = {
-				{
-					"nvim-treesitter/nvim-treesitter-textobjects",
-					branch = "main",
-				},
-			},
-		},
-		{
-			"mason-org/mason.nvim",
-			"mason-org/mason-lspconfig.nvim",
-			-- "lukas-reineke/lsp-format.nvim",
+			"onsails/lspkind.nvim",
+			event = "InsertEnter",
 		},
 		{
 			"rachartier/tiny-inline-diagnostic.nvim",
@@ -100,34 +85,30 @@ lazy.setup({
 			priority = 1000,
 		},
 		{
-			url = "https://codeberg.org/andyg/leap.nvim",
+			"folke/trouble.nvim",
+			cmd = "Trouble",
 		},
-
-		{ "kevinhwang91/nvim-ufo", dependencies = { "kevinhwang91/promise-async" } },
+		{ "artemave/workspace-diagnostics.nvim" },
+		{ "mrcjkb/rustaceanvim", version = "^7", lazy = false },
 		{
-			"onsails/lspkind.nvim",
-			event = "InsertEnter",
+			"pmizio/typescript-tools.nvim",
+			dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 		},
+		{ "seblyng/roslyn.nvim" },
 		{
-			"folke/noice.nvim",
-			event = "VeryLazy",
-			dependencies = {
-				"MunifTanjim/nui.nvim",
+			"dmmulroy/tsc.nvim",
+			opts = {
+				use_trouble_qflist = true,
 			},
 		},
 
-		{
-			"nvim-zh/colorful-winsep.nvim",
-			config = true,
-		},
-		{
-			"xiyaowong/transparent.nvim",
-		},
+		-- ============================================================================
+		-- Completion
+		-- ============================================================================
 		{
 			"hrsh7th/nvim-cmp",
 			event = { "InsertEnter", "CmdlineEnter" },
 			dependencies = {
-				"hrsh7th/cmp-nvim-lsp",
 				"hrsh7th/cmp-nvim-lsp",
 				"hrsh7th/cmp-buffer",
 				"hrsh7th/cmp-path",
@@ -138,16 +119,8 @@ lazy.setup({
 			},
 		},
 		{
-			"folke/trouble.nvim",
-			cmd = "Trouble",
-		},
-		{
-			"artemave/workspace-diagnostics.nvim",
-		},
-		{
 			"saghen/blink.cmp",
 			dependencies = {
-				-- "abeldekat/cmp-mini-snippets",
 				"saghen/blink.lib",
 				{
 					"L3MON4D3/LuaSnip",
@@ -161,73 +134,140 @@ lazy.setup({
 			version = "1.*",
 			opts_extend = { "sources.default" },
 		},
+
+		-- ============================================================================
+		-- Colorschemes
+		-- ============================================================================
+		{ "sainnhe/everforest", lazy = false, priority = 1000 },
+		{ "rebelot/kanagawa.nvim", lazy = false, priority = 1000 },
+		{ "catppuccin/nvim" },
+
+		-- ============================================================================
+		-- UI & Appearance
+		-- ============================================================================
+		{ "akinsho/bufferline.nvim" },
+		{ "nvim-lualine/lualine.nvim" },
+		{ "folke/edgy.nvim" },
+		{ "rcarriga/nvim-notify" },
+		{
+			"folke/noice.nvim",
+			event = "VeryLazy",
+			dependencies = {
+				"MunifTanjim/nui.nvim",
+			},
+		},
+		{ "nvim-zh/colorful-winsep.nvim", config = true },
+		{ "xiyaowong/transparent.nvim" },
+		{ "norcalli/nvim-colorizer.lua" },
+		{ "j-hui/fidget.nvim" },
+
+		-- ============================================================================
+		-- Motion & Navigation
+		-- ============================================================================
+		{
+			url = "https://codeberg.org/andyg/leap.nvim",
+		},
+		{ "kevinhwang91/nvim-ufo", dependencies = { "kevinhwang91/promise-async" } },
+		{ "mg979/vim-visual-multi" },
 		{
 			"nvim-telescope/telescope.nvim",
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 			},
 		},
-		{
-			"nvim-lualine/lualine.nvim",
-		},
-		{ "mrcjkb/rustaceanvim", version = "^7", lazy = false },
-		{
-			"folke/edgy.nvim",
-		},
-		{
-			"folke/snacks.nvim",
-		},
-		{
-			"pmizio/typescript-tools.nvim",
-			dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-		},
-		{ "seblyng/roslyn.nvim" },
+		{ "folke/snacks.nvim" },
 
+		-- ============================================================================
+		-- Mini.nvim
+		-- ============================================================================
+		{
+			"nvim-mini/mini.nvim",
+			version = false,
+			dependencies = {
+				{
+					"nvim-treesitter/nvim-treesitter-textobjects",
+					branch = "main",
+				},
+			},
+		},
+
+		-- ============================================================================
+		-- Git
+		-- ============================================================================
+		{ "lewis6991/gitsigns.nvim" },
+		{ "tpope/vim-fugitive" },
+		{ "CoreyKaylor/diffbandit.nvim" },
+		{ "esmuellert/codediff.nvim", cmd = "CodeDiff" },
+
+		-- ============================================================================
+		-- Debugging
+		-- ============================================================================
+		{
+			"rcarriga/nvim-dap-ui",
+			dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+		},
+
+		-- ============================================================================
+		-- Build Tools
+		-- ============================================================================
+		{
+			"Mythos-404/xmake.nvim",
+			opts = {
+				compile_commands = {
+					enable = true,
+					outputdir = ".",
+				},
+			},
+		},
+
+		-- ============================================================================
+		-- AI & Code Assistants
+		-- ============================================================================
 		{
 			"olimorris/codecompanion.nvim",
 			version = "^19.10.0",
 		},
 		{
-			"nemanjamalesija/smart-paste.nvim",
-			event = "VeryLazy",
-			config = true,
-		},
-		{
-			"rafcamlet/nvim-luapad",
-		},
-		{
-			"j-hui/fidget.nvim",
-		},
-		{
-			"dmmulroy/tsc.nvim",
-			opts = {
-				use_trouble_qflist = true,
-			},
-		},
-		{
-			"esmuellert/codediff.nvim",
-			cmd = "CodeDiff",
-		},
-		{
-			"Exafunction/windsurf.nvim",
+			-- "Exafunction/windsurf.nvim",
+			"monkoose/neocodeium",
 			dependencies = {
 				"nvim-lua/plenary.nvim",
 				"hrsh7th/nvim-cmp",
 			},
 		},
 		{
-			"mg979/vim-visual-multi",
+			"yetone/avante.nvim",
+			event = "VeryLazy",
+			dependencies = {
+				"ColinKennedy/mega.cmdparse",
+				"ColinKennedy/mega.logging",
+			},
+			build = {
+				"make",
+				timeout = false,
+			},
 		},
 
+		-- ============================================================================
+		-- Discord
+		-- ============================================================================
 		{
-			"lewis6991/gitsigns.nvim",
+			"vyfor/cord.nvim",
+			build = ":Cord update",
 		},
+
+		-- ============================================================================
+		-- Utilities
+		-- ============================================================================
 		{
-			"tpope/vim-fugitive",
+			-- Make sure to set this up properly if you have lazy=true
+			"MeanderingProgrammer/render-markdown.nvim",
+			opts = {
+				file_types = { "markdown", "Avante" },
+			},
+			ft = { "markdown", "Avante" },
 		},
-		{
-			"CoreyKaylor/diffbandit.nvim",
-		},
+		{ "nemanjamalesija/smart-paste.nvim", event = "VeryLazy", config = true },
 	},
 	-- Configure any other settings here. See the documentation for more details.
 	-- colorscheme that will be used when installing plugins.
