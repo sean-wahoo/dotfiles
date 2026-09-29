@@ -182,7 +182,7 @@ function M.open_preview(command)
 		end,
 	})
 	vim.wo[win].cursorline = false
-	vim.o.guicursor = "a:HiddenCursor"
+	-- vim.o.guicursor = "a:HiddenCursor"
 
 	for index, m in ipairs(highlights_metadata) do
 		local line_index = index - 1
