@@ -7,15 +7,18 @@ end
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 null_ls.setup({
 	sources = {
+
+		-- formatting
 		null_ls.builtins.formatting.stylua,
 		null_ls.builtins.formatting.prettierd.with({
 			disabled_filetypes = { "markdown.mdx" },
 		}),
 		null_ls.builtins.formatting.yamlfmt,
-
 		null_ls.builtins.formatting.clang_format,
 
+		-- diagnostics
 		null_ls.builtins.diagnostics.yamllint,
+		-- null_ls.builtins.diagnostics.cppcheck,
 	},
 	on_attach = function(client, bufnr)
 		if client:supports_method("textDocument/formatting") then

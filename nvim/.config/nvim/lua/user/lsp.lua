@@ -2,10 +2,14 @@ local files = io.popen([[ /usr/bin/ls -pa $HOME/.config/nvim/lsp | grep -v /]]):
 
 local lsp_servers = {}
 
+local disable_servers = { "ccls" }
+
 for file in files do
 	local lsp_name = string.gmatch(file, "([^.]+)")()
 	lsp_name = lsp_name == "lua-language-server" and "lua_ls" or lsp_name
-	table.insert(lsp_servers, lsp_name)
+	if not vim.tbl_contains(disable_servers, lsp_name) then
+		table.insert(lsp_servers, lsp_name)
+	end
 end
 
 local m_ok, mason = pcall(require, "mason")
@@ -23,6 +27,7 @@ else
 			"bash-language-server",
 			"rustfmt",
 			"rust-analyzer",
+			"clangd",
 		},
 	})
 end
@@ -68,19 +73,15 @@ else
 end
 local trouble_ok, trouble = pcall(require, "trouble")
 
-local keymap = require("user.keymaps").keymap
+local keymap = vim.keymap.set
 local function lsp_keymaps(bufnr)
-	local opts = { noremap = true, silent = true, buffer = bufnr }
+	local opts = { noremap = true, silent = true, buffer = bufnr, nowait = true }
 
-	opts.desc = "lsp show declarations"
-	keymap("n", "gD", function()
-		Snacks.picker.lsp_declarations()
-	end, opts)
+	opts.desc = "lsp goto declaration"
+	keymap("n", "gD", [[<cmd>lua vim.lsp.buf.declaration()<CR>]], opts)
+	opts.desc = "lsp goto definition"
+	keymap("n", "gd", [[<cmd>lua vim.lsp.buf.definition()<CR>]], opts)
 
-	opts.desc = "lsp show definition"
-	keymap("n", "gd", function()
-		Snacks.picker.lsp_definitions()
-	end, opts)
 	opts.desc = "signature help"
 	keymap("n", "<leader>ls", function()
 		vim.lsp.buf.signature_help()
@@ -93,14 +94,14 @@ local function lsp_keymaps(bufnr)
 	keymap("n", "gi", function()
 		Snacks.picker.lsp_implementations()
 	end, opts)
-	opts.desc = "rename"
 
-	keymap("n", "gy", function()
+	opts.desc = "goto type definition"
+	keymap("n", "<leader>ly", function()
 		Snacks.picker.lsp_type_definitions()
 	end, opts)
 
 	opts.desc = "open float"
-	keymap("n", "go", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
+	keymap("n", "<leader>lo", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
 
 	opts.desc = "code actions"
 	keymap("n", "<leader>la", function()
@@ -211,10 +212,12 @@ local lsp_on_attach = function(client, bufnr)
 end
 vim.diagnostic.config(diagnostic_config)
 
-vim.lsp.config("*", {
-	capabilites = common_capabilities(),
-	on_attach = lsp_on_attach,
-})
+for _, server in ipairs(lsp_servers) do
+	vim.lsp.config(server, {
+		capabilities = common_capabilities(),
+		on_attach = lsp_on_attach,
+	})
+end
 vim.lsp.enable(lsp_servers)
 
 require("user.null_ls")
